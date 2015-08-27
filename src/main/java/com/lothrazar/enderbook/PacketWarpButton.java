@@ -39,6 +39,7 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		//do player warp and stuff. just a test:
 		player.setPositionAndUpdate(0, 99, 0);
 		
+		//TODO:ItemEnderBook.teleport(player, null);
 		
 		return null;
 	}

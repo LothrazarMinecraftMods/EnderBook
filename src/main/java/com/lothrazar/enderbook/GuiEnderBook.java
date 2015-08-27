@@ -36,25 +36,23 @@ public class GuiEnderBook  extends GuiScreen
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
 		int buttonID = 0, w = 52,h = 20 ,x,y;
+		buttonIdNew = buttonID;
 		
 		 ArrayList<Location> list = ItemEnderBook.getLocations(book);
 		 
 		//one button to create new waypoints. all the other ones just use a waypoint
-		buttonList.add(new GuiButton(buttonID++, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new")));
+		buttonList.add(new GuiButton(buttonIdNew, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new")));
 // on new clicked, we want the server to run ItemEnderBook.saveCurrentLocation
-		buttonIdNew = buttonID;
+		
 		System.out.println("init with this many "+list.size());
 		for(int i = 0; i < list.size(); i++)
 		{
-			//TODO: loop over current waypoints and display
-			//buttonList.add(new GuiButton(buttonID++, (width - 400) / 2 + (buttonID % 6) * 60, 20 + 30 * (buttonID / 6), 64, 16,"test"));
-			
 			x = (this.width - 400) / 2 - 2;
-			y = 40 + 30 * (buttonID);// / 6
-			 
+			buttonID++ ;
+			y = 40 + 30 * (buttonID);
 			
 			buttonList.add(new GuiButton(buttonID++, x,y,w,h,StatCollector.translateToLocal("gui.enderbook.go")));
-			//ItemEnderBook.teleport
+
 			buttonID++;
 		}
 	}
@@ -69,8 +67,6 @@ public class GuiEnderBook  extends GuiScreen
 	@Override
 	protected void actionPerformed(GuiButton btn)
 	{
-		System.out.println("button clicked "+btn.id);
-		
 		if(btn.id == buttonIdNew)
 			ModEnderBook.network.sendToServer(new PacketNewButton());
 		else
@@ -81,10 +77,5 @@ public class GuiEnderBook  extends GuiScreen
 	public boolean doesGuiPauseGame()
 	{
 		return false;
-	}/*
-	@Override
-	public void onGuiClosed()
-	{
-		Keyboard.enableRepeatEvents(false);
-	}*/
+	}
 }

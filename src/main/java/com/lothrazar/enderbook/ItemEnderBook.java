@@ -18,7 +18,9 @@ import net.minecraft.util.EnumChatFormatting;
 public class ItemEnderBook extends ItemTool
 { 
 	public static String KEY_LOC = "location"; 
+	public static String KEY_LARGEST = "loc_largest"; 
 	public static ItemEnderBook itemEnderBook;
+	public static final int MAX_SAVED = 9;
 	private static int DURABILITY = 50;
 	
 	public ItemEnderBook( )
@@ -28,7 +30,8 @@ public class ItemEnderBook extends ItemTool
 		this.setMaxStackSize(1);
     	setCreativeTab(CreativeTabs.tabTransport) ; 
 	}
-	public static final int MAX_SAVED = 9;
+	
+	
 	public static ArrayList<Location> getLocations(ItemStack itemStack)
 	{
 		 ArrayList<Location> list = new  ArrayList<Location>();
@@ -49,6 +52,12 @@ public class ItemEnderBook extends ItemTool
 		 } 
 		 
 		 return list;
+	}
+	public static int getEmptySlot(ItemStack itemStack)
+	{
+		int empty =  itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);
+		return empty;
 	}
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) 
@@ -86,11 +95,13 @@ public class ItemEnderBook extends ItemTool
 	     } 
 	 }
 
-	public void saveCurrentLocation(EntityPlayer entityPlayer, ItemStack itemStack) 
+	public static void saveCurrentLocation(EntityPlayer entityPlayer) 
 	{ 
-		// if(event.entityPlayer.isSneaking() == false){ return;} 
-		int slot = entityPlayer.inventory.currentItem + 1;
-    	Location loc = new Location(slot
+		if (entityPlayer.getHeldItem().stackTagCompound == null) {entityPlayer.getHeldItem().stackTagCompound = new NBTTagCompound();}
+	
+		
+		int id = getEmptySlot(entityPlayer.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
+    	Location loc = new Location(id
     			,entityPlayer.posX
     			,entityPlayer.posY
     			,entityPlayer.posZ
@@ -98,11 +109,11 @@ public class ItemEnderBook extends ItemTool
     			,""//,biome.biomeName
     			);
     	
-    	String KEY = ItemEnderBook.KEY_LOC + "_" + slot;
+    	String KEY = ItemEnderBook.KEY_LOC + "_" + id;
 
-		if (itemStack.stackTagCompound == null) {itemStack.stackTagCompound = new NBTTagCompound();}
+		System.out.println("new loc "+id);
 		
-    	itemStack.stackTagCompound.setString(KEY, loc.toCSV());		
+		entityPlayer.getHeldItem().stackTagCompound.setString(KEY, loc.toCSV());		
 	} 
 	
 	public static void teleport(EntityPlayer entityPlayer, ItemStack enderBookInstance) 
