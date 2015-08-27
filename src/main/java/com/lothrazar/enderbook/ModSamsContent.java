@@ -1,5 +1,6 @@
 package com.lothrazar.enderbook;
  
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -73,9 +74,9 @@ public class ModSamsContent
 		{
 			System.out.println("OPENGUI!!!!");
 			EntityPlayer player = event.entityPlayer;
-			World world = event.world;
-			
-			player.openGui(instance, guiIndex, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			//World world = event.world;
+			Minecraft.getMinecraft().displayGuiScreen(new GuiEnderBook(player));
+			//player.openGui(instance, guiIndex, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 /*
 		if (event.action.LEFT_CLICK_BLOCK == event.action)

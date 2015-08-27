@@ -1,5 +1,7 @@
 package com.lothrazar.enderbook;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,10 +26,12 @@ public class GuiEnderBook  extends GuiScreen
 	@Override
 	public void initGui()
 	{
+		//great tips here http://www.minecraftforge.net/forum/index.php?topic=29945.0
+	   // Keyboard.enableRepeatEvents(true);
 		ItemStack book = entityPlayer.getHeldItem();
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
-		int buttonID = 1, w = 64,h = 16 ,x,y;
+		int buttonID = 1, w = 64,h = 20 ,x,y;
 
 		for(int i = 0; i < buttonCount; i++)
 		{
@@ -59,6 +63,11 @@ public class GuiEnderBook  extends GuiScreen
 	@Override
 	public boolean doesGuiPauseGame()
 	{
-		return true;//setting to false, works but hen the game crashes when player opens regular inventor ywhile this is open..?
-	}
+		return false;
+	}/*
+	@Override
+	public void onGuiClosed()
+	{
+		Keyboard.enableRepeatEvents(false);
+	}*/
 }

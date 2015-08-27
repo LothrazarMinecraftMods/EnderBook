@@ -12,7 +12,7 @@ public class ModGuiHandler implements IGuiHandler
 	public Object getServerGuiElement(int id, EntityPlayer player, World world,	int x, int y, int z) 
 	{
 
-		if(id == ModSamsContent.guiIndex)return new ContainerEnderBook();
+		//if(id == ModSamsContent.guiIndex)return new ContainerEnderBook();
 		return null;
 	}
 
