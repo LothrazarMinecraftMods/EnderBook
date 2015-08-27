@@ -69,7 +69,7 @@ public class ModSamsContent
 		ItemStack itemStack = event.entityPlayer.getCurrentEquippedItem();
 		if (itemStack == null || itemStack.getItem() == null ) { return; }
 		
-		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && event.action.LEFT_CLICK_BLOCK == event.action)
+		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && event.action.RIGHT_CLICK_AIR == event.action)
 		{
 			System.out.println("OPENGUI!!!!");
 			EntityPlayer player = event.entityPlayer;
