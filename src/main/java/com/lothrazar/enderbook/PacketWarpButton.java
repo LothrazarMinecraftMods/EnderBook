@@ -8,18 +8,23 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpButton, IMessage>
 {
+	private int slot;
+	public PacketWarpButton(){}
+	public PacketWarpButton(int s)
+	{
+		slot=s;
+	}
+	
 	@Override
 	public void fromBytes(ByteBuf buf) 
 	{
-
-		
+		slot = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) 
 	{
-
-		
+		buf.writeInt(slot);
 	}
 	
 	@Override
@@ -34,12 +39,11 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		
 		
 		
-		
+		ItemEnderBook.teleport(player, message.slot);
 		
 		//do player warp and stuff. just a test:
-		player.setPositionAndUpdate(0, 99, 0);
-		
-		//TODO:ItemEnderBook.teleport(player, null);
+		//player.setPositionAndUpdate(0, 99, 0);
+		 
 		
 		return null;
 	}

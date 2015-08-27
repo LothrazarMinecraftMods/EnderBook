@@ -116,12 +116,27 @@ public class ItemEnderBook extends ItemTool
 		entityPlayer.getHeldItem().stackTagCompound.setString(KEY, loc.toCSV());		
 	} 
 	
-	public static void teleport(EntityPlayer entityPlayer, ItemStack enderBookInstance) 
+	private static Location getLocation(ItemStack stack, int slot)
+	{
+		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
+		
+		if(csv == null || csv.isEmpty()) 
+		{
+			//Relay.addChatMessage(event.entityPlayer, "No location saved at "+KEY);
+			return null;
+		}
+		
+		return new Location(csv);
+		
+	}
+	
+	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
 	{ 
-		int slot = entityPlayer.inventory.currentItem+1;
-    	String KEY = ItemEnderBook.KEY_LOC + "_" + slot;
-    	
-		String csv = enderBookInstance.stackTagCompound.getString(KEY);
+		//int slot = entityPlayer.inventory.currentItem+1;
+		System.out.println("tp to "+slot);
+    
+    	ItemStack stack = player.getHeldItem();
+		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
 		{
@@ -129,9 +144,8 @@ public class ItemEnderBook extends ItemTool
 			return;
 		}
 		
-		Location loc = new Location(csv);
-		
-		if(entityPlayer.dimension != 0)// TODO: Reference dim nums
+		Location loc = getLocation(player.getHeldItem(),slot);
+		if(player.dimension != 0)// TODO: Reference dim nums
 		{
 			//Chat.addMessage(event.entityPlayer, "Only useable in the overworld");
 			return;
@@ -139,16 +153,16 @@ public class ItemEnderBook extends ItemTool
 	
 		if(loc.dimension == 1) // TODO: Reference dim nums
 		{
-			entityPlayer.setFire(4);
+			player.setFire(4);
 		} 
 		else if(loc.dimension == -1)// TODO: Reference dim nums
 		{
-			entityPlayer.heal(-15);
+			player.heal(-15);
 		}
   
-	    entityPlayer.setPositionAndUpdate(loc.X,loc.Y,loc.Z); 
+	    player.setPositionAndUpdate(loc.X,loc.Y,loc.Z); 
 
-		entityPlayer.getCurrentEquippedItem().damageItem(1, entityPlayer);
+		player.getCurrentEquippedItem().damageItem(1, player);
 	}
 	 
 	public static void initEnderbook()

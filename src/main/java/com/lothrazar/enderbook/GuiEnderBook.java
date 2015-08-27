@@ -48,8 +48,8 @@ public class GuiEnderBook  extends GuiScreen
 		for(int i = 0; i < list.size(); i++)
 		{
 			x = (this.width - 400) / 2 - 2;
-			buttonID++ ;
-			y = 40 + 30 * (buttonID);
+			buttonID++;
+			y = 40 + 5 * (buttonID);
 			
 			buttonList.add(new GuiButton(buttonID++, x,y,w,h,StatCollector.translateToLocal("gui.enderbook.go")));
 
@@ -68,9 +68,15 @@ public class GuiEnderBook  extends GuiScreen
 	protected void actionPerformed(GuiButton btn)
 	{
 		if(btn.id == buttonIdNew)
+		{
+			
 			ModEnderBook.network.sendToServer(new PacketNewButton());
+		}
 		else
 			ModEnderBook.network.sendToServer(new PacketWarpButton());
+		
+		
+		this.entityPlayer.closeScreen();
 		
 	}
 	@Override
