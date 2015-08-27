@@ -12,22 +12,30 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
  
 //TODO: fix // ,guiFactory = "com.lothrazar.samspowerups.gui.ConfigGuiFactory"
-@Mod(modid = ModSamsContent.MODID,  useMetadata = true) 
-public class ModSamsContent
+@Mod(modid = ModEnderBook.MODID,  useMetadata = true) 
+public class ModEnderBook
 {
-	@Instance(value = ModSamsContent.MODID)
-	public static ModSamsContent instance;
+	@Instance(value = ModEnderBook.MODID)
+	public static ModEnderBook instance;
+	@SidedProxy(clientSide = "com.lothrazar.enderbook.ClientProxy", serverSide = "com.lothrazar.enderbook.CommonProxy")
+	public static CommonProxy proxy;
 //	public static Logger logger;
+	//public static Configuration config;
 	public final static String MODID = "enderbook";
+	public static String TEXTURE_LOCATION = MODID+":";
+	public static final SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+	 
 
-	public static Configuration config;
 	public static int guiIndex = 52;
  
 	@EventHandler
@@ -35,32 +43,27 @@ public class ModSamsContent
 	{ 
 		//logger = event.getModLog();
 		
-		config = new Configuration(event.getSuggestedConfigurationFile());
+		//config = new Configuration(event.getSuggestedConfigurationFile());
  
-
 		MinecraftForge.EVENT_BUS.register(instance);
 		FMLCommonHandler.instance().bus().register(instance);
-  
 	}
 	
 	 
-/*
- * http://www.minecraftforge.net/forum/index.php?topic=7427.0
- * @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int sideHit, float hitVecX, float hitVecY, float hitVecZ) {
-
-        if (world.isRemote) {
-            entityPlayer.openGui(yourmod.instance, yourguiID, world, x, y, z);
-        }
-        return true;
-    }	*/
 	@EventHandler
 	public void onInit(FMLInitializationEvent event)
 	{     
 		 ItemEnderBook.initEnderbook();
+
+		//http://www.minecraftforge.net/forum/index.php?topic=7427.0
+
+		 proxy.registerRenderers();
+	//	 NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
 		 
-		 //proxy.registerRenderers();
-		 NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
+		 
+		 //register network packets
+		 int packetID = 0;
+		 network.registerMessage(PacketWarpButton.class, PacketWarpButton.class, packetID++, Side.SERVER);
 	}
  
 	@SubscribeEvent
@@ -71,8 +74,7 @@ public class ModSamsContent
 		if (itemStack == null || itemStack.getItem() == null ) { return; }
 		
 		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && event.action.RIGHT_CLICK_AIR == event.action)
-		{
-			System.out.println("OPENGUI!!!!");
+		{ 
 			EntityPlayer player = event.entityPlayer;
 			//World world = event.world;
 			Minecraft.getMinecraft().displayGuiScreen(new GuiEnderBook(player));
@@ -95,12 +97,9 @@ public class ModSamsContent
 		}*/
 	}
  
-	 public static String TEXTURE_LOCATION = MODID+":";
- 
-	 public static void registerItemHelper(Item s, String name)
-	 {
-		 s.setUnlocalizedName(name).setTextureName(TEXTURE_LOCATION + name);
-		 GameRegistry.registerItem(s, name);
-	 }
-	 
+	public static void registerItemHelper(Item s, String name)
+	{
+		s.setUnlocalizedName(name).setTextureName(TEXTURE_LOCATION + name);
+		GameRegistry.registerItem(s, name);
+	}
 }

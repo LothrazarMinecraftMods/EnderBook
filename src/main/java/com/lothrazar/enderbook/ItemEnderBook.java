@@ -121,7 +121,7 @@ public class ItemEnderBook extends ItemTool
 	{
 		itemEnderBook = new ItemEnderBook();
 
-		ModSamsContent.registerItemHelper(itemEnderBook, "book_ender");
+		ModEnderBook.registerItemHelper(itemEnderBook, "book_ender");
 
 		GameRegistry.addRecipe(new ItemStack(itemEnderBook), "eee", "ebe",
 				"eee", 'e', Items.ender_pearl, 'b', Items.book);

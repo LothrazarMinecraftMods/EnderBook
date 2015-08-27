@@ -42,7 +42,7 @@ public class GuiEnderBook  extends GuiScreen
 			y = 20;// + 30 * (buttonID / 6);
 			 
 			
-			buttonList.add(new GuiButton(buttonID++, (width - 400) / 2 + (buttonID % 6) * 60, 20 + 30 * (buttonID / 6), 64, 16,"test"));
+			buttonList.add(new GuiButton(buttonID++, x,y,w,h,"test"));
 			
 			buttonID++;
 		}
@@ -59,6 +59,10 @@ public class GuiEnderBook  extends GuiScreen
 	protected void actionPerformed(GuiButton btn)
 	{
 		System.out.println("button clicked "+btn.id);
+		
+		//TODO: send data inside packet 
+		ModEnderBook.network.sendToServer(new PacketWarpButton());
+		
 	}
 	@Override
 	public boolean doesGuiPauseGame()
