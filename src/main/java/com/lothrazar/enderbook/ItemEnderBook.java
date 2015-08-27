@@ -1,5 +1,6 @@
 package com.lothrazar.enderbook;
 
+import java.util.ArrayList;
 import java.util.List; 
 
 import com.google.common.collect.Sets;   
@@ -27,7 +28,28 @@ public class ItemEnderBook extends ItemTool
 		this.setMaxStackSize(1);
     	setCreativeTab(CreativeTabs.tabTransport) ; 
 	}
+	public static final int MAX_SAVED = 9;
+	public static ArrayList<Location> getLocations(ItemStack itemStack)
+	{
+		 ArrayList<Location> list = new  ArrayList<Location>();
+		 
+		 String KEY; 
+ 
+		 for(int i = 0; i <= MAX_SAVED; i++)
+		 {
 
+		 	 KEY = KEY_LOC + "_" + i;
+
+			 String csv = itemStack.stackTagCompound.getString(KEY);
+	
+			 if(csv == null || csv.isEmpty()) {continue;} 
+		 
+			 list.add(new Location(csv));
+ 
+		 } 
+		 
+		 return list;
+	}
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) 
 	{ 
@@ -78,7 +100,8 @@ public class ItemEnderBook extends ItemTool
     	
     	String KEY = ItemEnderBook.KEY_LOC + "_" + slot;
 
-		if (itemStack.stackTagCompound == null) itemStack.stackTagCompound = new NBTTagCompound();
+		if (itemStack.stackTagCompound == null) {itemStack.stackTagCompound = new NBTTagCompound();}
+		
     	itemStack.stackTagCompound.setString(KEY, loc.toCSV());		
 	} 
 	
