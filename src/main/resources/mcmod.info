@@ -1,0 +1,16 @@
+[
+{
+  "modid": "samscontent",
+  "name": "Sam's Content",
+  "description": "New commands, items, blocks, lots of stuff backported from 1.8, new key bindings, more fuel... Check the config file for details.",
+  "version": "1.7.10-1.0",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Lothrazar"],
+  "credits": "Thanks to LexManos for gradle youtube videos.  And everyone who makes their mods Open Source, and everyone on the forge forums.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
