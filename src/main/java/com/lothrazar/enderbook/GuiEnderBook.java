@@ -27,7 +27,7 @@ public class GuiEnderBook  extends GuiScreen
 		ItemStack book = entityPlayer.getHeldItem();
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
-		int buttonID = 1, w = 64,h = 16 ,x,y,;
+		int buttonID = 1, w = 64,h = 16 ,x,y;
 
 		for(int i = 0; i < buttonCount; i++)
 		{
