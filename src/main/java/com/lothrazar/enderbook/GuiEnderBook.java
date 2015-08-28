@@ -44,7 +44,7 @@ public class GuiEnderBook  extends GuiScreen
 		buttonList.add(new GuiButton(buttonIdNew, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new")));
 // on new clicked, we want the server to run ItemEnderBook.saveCurrentLocation
 		
-		System.out.println("init with this many "+list.size());
+		//System.out.println("init with this many "+list.size());
 		for(int i = 0; i < list.size(); i++)
 		{
 			x = (this.width - 400) / 2 - 2;
@@ -73,7 +73,7 @@ public class GuiEnderBook  extends GuiScreen
 			ModEnderBook.network.sendToServer(new PacketNewButton());
 		}
 		else
-			ModEnderBook.network.sendToServer(new PacketWarpButton());
+			ModEnderBook.network.sendToServer(new PacketWarpButton(btn.id));
 		
 		
 		this.entityPlayer.closeScreen();

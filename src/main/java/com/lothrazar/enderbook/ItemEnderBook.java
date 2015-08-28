@@ -21,12 +21,12 @@ public class ItemEnderBook extends ItemTool
 	public static String KEY_LARGEST = "loc_largest"; 
 	public static ItemEnderBook itemEnderBook;
 	public static final int MAX_SAVED = 9;
-	private static int DURABILITY = 50;
+	//private static int DURABILITY = 50;
 	
 	public ItemEnderBook( )
 	{  
 		super(1.0F,Item.ToolMaterial.WOOD, Sets.newHashSet()); 
-    	this.setMaxDamage(DURABILITY);
+    	//this.setMaxDamage(DURABILITY);
 		this.setMaxStackSize(1);
     	setCreativeTab(CreativeTabs.tabTransport) ; 
 	}
@@ -140,29 +140,32 @@ public class ItemEnderBook extends ItemTool
 		
 		if(csv == null || csv.isEmpty()) 
 		{
+			System.out.println(" csv.isEmpty");
 			//Relay.addChatMessage(event.entityPlayer, "No location saved at "+KEY);
 			return;
 		}
 		
 		Location loc = getLocation(player.getHeldItem(),slot);
-		if(player.dimension != 0)// TODO: Reference dim nums
+		if(player.dimension != loc.dimension)// TODO: Reference dim nums
 		{
+			System.out.println("Mismatched dimensions");
+			//player.addChatMessage(new ChatTranslationComponent("Mismatched dimensions"));
 			//Chat.addMessage(event.entityPlayer, "Only useable in the overworld");
 			return;
 		}
 	
-		if(loc.dimension == 1) // TODO: Reference dim nums
+		/*if(loc.dimension == 1) // TODO: Reference dim nums
 		{
 			player.setFire(4);
 		} 
 		else if(loc.dimension == -1)// TODO: Reference dim nums
 		{
 			player.heal(-15);
-		}
+		}*/
   
 	    player.setPositionAndUpdate(loc.X,loc.Y,loc.Z); 
 
-		player.getCurrentEquippedItem().damageItem(1, player);
+		//player.getCurrentEquippedItem().damageItem(1, player);
 	}
 	 
 	public static void initEnderbook()
