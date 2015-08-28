@@ -23,7 +23,7 @@ public class ConfigSettings
 		//player.getCurrentEquippedItem().damageItem(1, player);
 		maximumSaved = config.getInt("max_saved", category, 10, 5, 20, "How many waypoints the book can store");
 		
-		if(config.hasChanged()){return;}
+		if(config.hasChanged()){config.save();}
 	}
 	
 }
