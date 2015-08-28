@@ -139,18 +139,11 @@ public class ItemEnderBook extends ItemTool
 			//Chat.addMessage(event.entityPlayer, "Only useable in the overworld");
 			return;
 		}
-	
-		/*if(loc.dimension == 1) // TODO: Reference dim nums
-		{
-			player.setFire(4);
-		} 
-		else if(loc.dimension == -1)// TODO: Reference dim nums
-		{
-			player.heal(-15);
-		}*/
-  
+	 
 	    player.setPositionAndUpdate(loc.X,loc.Y,loc.Z); 
 
+	    
+	    //TODO: a config entry so it takes durability?
 		//player.getCurrentEquippedItem().damageItem(1, player);
 	}
 	 
@@ -158,12 +151,29 @@ public class ItemEnderBook extends ItemTool
 	{
 		itemEnderBook = new ItemEnderBook();
 
-		ModEnderBook.registerItemHelper(itemEnderBook, "book_ender");
+		String name = "book_ender";
+		itemEnderBook.setUnlocalizedName(name).setTextureName(ModEnderBook.TEXTURE_LOCATION + name);
+		GameRegistry.registerItem(itemEnderBook,name);
+		
 
-		GameRegistry.addRecipe(new ItemStack(itemEnderBook), "eee", "ebe",
-				"eee", 'e', Items.ender_pearl, 'b', Items.book);
-		GameRegistry.addSmelting(itemEnderBook, new ItemStack(
-				Items.ender_pearl, 8), 0);
+		if(ModEnderBook.config.craftNetherStar)
+			GameRegistry.addRecipe(new ItemStack(itemEnderBook), 
+				"ene", 
+				"ebe",
+				"eee", 
+				'e', Items.ender_pearl, 
+				'b', Items.book,
+				'n', Items.nether_star //TODO : a config entry that decides if it uses a star or not
+				);
+		else
+			GameRegistry.addRecipe(new ItemStack(itemEnderBook), 
+				"eee", 
+				"ebe",
+				"eee", 
+				'e', Items.ender_pearl, 
+				'b', Items.book
+				);
+
 	}
 }
  

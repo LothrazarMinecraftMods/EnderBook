@@ -81,26 +81,8 @@ public class ModEnderBook
 			Minecraft.getMinecraft().displayGuiScreen(new GuiEnderBook(player));
 			//player.openGui(instance, guiIndex, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
-/*
-		if (event.action.LEFT_CLICK_BLOCK == event.action)
-		{ 
-			if (itemStack.getItem() == ItemEnderBook.itemEnderBook)
-			{
-				ItemEnderBook.teleport(event.entityPlayer, itemStack);
-			} 
-		} 
-		else
-		{
-			if (itemStack.getItem() == ItemEnderBook.itemEnderBook)
-			{
-				ItemEnderBook.itemEnderBook.saveCurrentLocation( event.entityPlayer, itemStack);
-			}
-		}*/
+ 
 	}
  
-	public static void registerItemHelper(Item s, String name)
-	{
-		s.setUnlocalizedName(name).setTextureName(TEXTURE_LOCATION + name);
-		GameRegistry.registerItem(s, name);
-	}
+ 
 }
