@@ -32,9 +32,9 @@ public class ItemEnderBook extends ItemTool
 	}
 	
 	
-	public static ArrayList<Location> getLocations(ItemStack itemStack)
+	public static ArrayList<BookLocation> getLocations(ItemStack itemStack)
 	{
-		 ArrayList<Location> list = new  ArrayList<Location>();
+		 ArrayList<BookLocation> list = new  ArrayList<BookLocation>();
 		 
 		 String KEY; 
  
@@ -47,7 +47,7 @@ public class ItemEnderBook extends ItemTool
 	
 			 if(csv == null || csv.isEmpty()) {continue;} 
 		 
-			 list.add(new Location(csv));
+			 list.add(new BookLocation(csv));
  
 		 } 
 		 
@@ -62,15 +62,10 @@ public class ItemEnderBook extends ItemTool
 		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);//save the next empty one
 		return empty;
 	}
+	/*
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) 
-	{ 
-	     if (itemStack.stackTagCompound == null) 
-	     { 
-        	 list.add("Right Click while sneaking to set location" );
-	    	 return;
-	     }
-	     
+	{  
 	     ItemStack held = player.getCurrentEquippedItem();
 
 		 int slot = player.inventory.currentItem + 1;
@@ -93,33 +88,24 @@ public class ItemEnderBook extends ItemTool
 			else
 				display = EnumChatFormatting.GRAY+ "["+ i + "] " ;
 			
-				 
-	    	 list.add(display+EnumChatFormatting.DARK_GREEN + loc.toDisplayNoCoords());
+			 
+	    	 list.add(display+EnumChatFormatting.DARK_GREEN + loc.toDisplay());
 	     } 
-	 }
+	 }*/
 
 	public static void saveCurrentLocation(EntityPlayer entityPlayer) 
 	{ 
 		if (entityPlayer.getHeldItem().stackTagCompound == null) {entityPlayer.getHeldItem().stackTagCompound = new NBTTagCompound();}
 	
-		
 		int id = getEmptySlot(entityPlayer.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
-    	Location loc = new Location(id
-    			,entityPlayer.posX
-    			,entityPlayer.posY
-    			,entityPlayer.posZ
-    			,entityPlayer.dimension 
-    			,""//,biome.biomeName
-    			);
-    	
-    	String KEY = ItemEnderBook.KEY_LOC + "_" + id;
-
+    	BookLocation loc = new BookLocation(id,entityPlayer  );
+    	 
 		System.out.println("new loc "+id);
 		
-		entityPlayer.getHeldItem().stackTagCompound.setString(KEY, loc.toCSV());		
+		entityPlayer.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + id, loc.toCSV());		
 	} 
 	
-	private static Location getLocation(ItemStack stack, int slot)
+	private static BookLocation getLocation(ItemStack stack, int slot)
 	{
 		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
@@ -129,8 +115,7 @@ public class ItemEnderBook extends ItemTool
 			return null;
 		}
 		
-		return new Location(csv);
-		
+		return new BookLocation(csv);
 	}
 	
 	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
@@ -148,7 +133,7 @@ public class ItemEnderBook extends ItemTool
 			return;
 		}
 		
-		Location loc = getLocation(player.getHeldItem(),slot);
+		BookLocation loc = getLocation(player.getHeldItem(),slot);
 		if(player.dimension != loc.dimension)// TODO: Reference dim nums
 		{
 			System.out.println("Mismatched dimensions");

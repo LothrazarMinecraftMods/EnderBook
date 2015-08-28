@@ -38,7 +38,7 @@ public class GuiEnderBook  extends GuiScreen
 		int buttonID = 0, w = 52,h = 20 ,x,y;
 		buttonIdNew = buttonID;
 		
-		 ArrayList<Location> list = ItemEnderBook.getLocations(book);
+		 ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
 		 
 		//one button to create new waypoints. all the other ones just use a waypoint
 		buttonList.add(new GuiButton(buttonIdNew, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new")));
@@ -48,7 +48,8 @@ public class GuiEnderBook  extends GuiScreen
 		for(int i = 0; i < list.size(); i++)
 		{
 			x = (this.width - 400) / 2 - 2;
-			buttonID = list.get(i).index;
+			buttonID = list.get(i).id;
+			System.out.println("new button with id "+buttonID);
 		//	buttonID++;
 			y = 40 + 10 * (buttonID);
 			//TODO: coordinates on the button?
