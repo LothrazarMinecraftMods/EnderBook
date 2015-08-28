@@ -37,7 +37,7 @@ public class GuiEnderBook  extends GuiScreen
 		ItemStack book = entityPlayer.getHeldItem();
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
-		int buttonID = 0, w = 52,h = 20 ,x,y = 40, ypad = 5;
+		int buttonID = 0, w = 52,h = 20 ,x = (this.width - 330) / 2,y = 40, ypad = 5;
 		buttonIdNew = buttonID;
 		
 		 ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
@@ -53,8 +53,6 @@ public class GuiEnderBook  extends GuiScreen
 		{
 			loc = list.get(i);
 	 
- 
-			x = (this.width - 350) / 2;
 			y += h + ypad;
 			b = new GuiButtonBook(loc.id, x,y,w,h,StatCollector.translateToLocal("gui.enderbook.go"));//+" "+loc.id
 			b.setTooltip(list.get(i).toDisplay());
