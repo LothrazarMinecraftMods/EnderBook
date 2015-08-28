@@ -19,9 +19,7 @@ public class ItemEnderBook extends Item
 { 
 	public static String KEY_LOC = "location"; 
 	public static String KEY_LARGEST = "loc_largest"; 
-	public static ItemEnderBook itemEnderBook;
-	public static final int MAX_SAVED = 9;
-	//private static int DURABILITY = 50;
+	public static ItemEnderBook itemEnderBook; 
 	
 	public ItemEnderBook( )
 	{  
@@ -38,9 +36,8 @@ public class ItemEnderBook extends Item
 		 
 		 String KEY; 
  
-		 for(int i = 0; i <= MAX_SAVED; i++)
+		 for(int i = 0; i <= ModEnderBook.config.maximumSaved; i++)
 		 {
-
 		 	 KEY = KEY_LOC + "_" + i;
 
 			 String csv = itemStack.stackTagCompound.getString(KEY);
@@ -48,7 +45,6 @@ public class ItemEnderBook extends Item
 			 if(csv == null || csv.isEmpty()) {continue;} 
 		 
 			 list.add(new BookLocation(csv));
- 
 		 } 
 		 
 		 return list;

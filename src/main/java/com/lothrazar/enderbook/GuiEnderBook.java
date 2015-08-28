@@ -51,7 +51,7 @@ public class GuiEnderBook  extends GuiScreen
 		buttonNew = new GuiButtonBook(buttonIdNew, this.width/2,y,w,h,StatCollector.translateToLocal("gui.enderbook.new"));
 
 		buttonList.add(buttonNew);
-	
+	System.out.println("Currentsize= "+ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size());
 		if(entityPlayer.getHeldItem() != null && 
 				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ModEnderBook.config.maximumSaved)
 		{
