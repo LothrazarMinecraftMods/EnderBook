@@ -48,23 +48,20 @@ public class GuiEnderBook  extends GuiScreen
 // on new clicked, we want the server to run ItemEnderBook.saveCurrentLocation
 		
 		GuiButtonBook b;
+		BookLocation loc;
 		for(int i = 0; i < list.size(); i++)
 		{
-			x = (this.width - 400) / 2 - 2;
-			buttonID = list.get(i).id;
-			System.out.println("new button with id "+buttonID);
-		//	buttonID++;
+			loc = list.get(i);
+	 
+ 
+			x = (this.width - 350) / 2;
 			y += h + ypad;
-			//TODO: coordinates on the button?
-			
-			b = new GuiButtonBook(buttonID, x,y,w,h
-					,StatCollector.translateToLocal("gui.enderbook.go")+" "+i);
+			b = new GuiButtonBook(loc.id, x,y,w,h,StatCollector.translateToLocal("gui.enderbook.go"));//+" "+loc.id
 			b.setTooltip(list.get(i).toDisplay());
+		
+			b.enabled = (loc.dimension == this.entityPlayer.dimension);
+		
 			buttonList.add(b);
-
-			//buttonID++;
-			
-			//drawHoveringText
 		}
 	}
  
