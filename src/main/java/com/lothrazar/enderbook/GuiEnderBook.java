@@ -42,12 +42,12 @@ public class GuiEnderBook  extends GuiScreen
 		
 		 ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
 		 
-		 buttonNew = new GuiButton(buttonIdNew, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new"));
+		 buttonNew = new GuiButtonBook(buttonIdNew, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new"));
 		//one button to create new waypoints. all the other ones just use a waypoint
 		buttonList.add(buttonNew);
 // on new clicked, we want the server to run ItemEnderBook.saveCurrentLocation
 		
-		//System.out.println("init with this many "+list.size());
+		GuiButtonBook b;
 		for(int i = 0; i < list.size(); i++)
 		{
 			x = (this.width - 400) / 2 - 2;
@@ -57,9 +57,10 @@ public class GuiEnderBook  extends GuiScreen
 			y += h + ypad;
 			//TODO: coordinates on the button?
 			
-			//buttonID+ " "+
-			buttonList.add(new GuiButton(buttonID, x,y,w,h
-					,StatCollector.translateToLocal("gui.enderbook.go")+" "+list.get(i).toDisplay()));
+			b = new GuiButtonBook(buttonID, x,y,w,h
+					,StatCollector.translateToLocal("gui.enderbook.go")+" "+i);
+			b.setTooltip(list.get(i).toDisplay());
+			buttonList.add(b);
 
 			//buttonID++;
 			
@@ -78,34 +79,16 @@ public class GuiEnderBook  extends GuiScreen
 		//http://www.minecraftforge.net/forum/index.php?topic=18043.0
 		for (int i = 0; i < buttonList.size(); i++) 
 		{
-			if (buttonList.get(i) instanceof GuiButton) 
+			if (buttonList.get(i) instanceof GuiButtonBook) 
 			{
-				GuiButton btn = (GuiButton) buttonList.get(i);
-				if (btn.func_146115_a()) 
+				GuiButtonBook btn = (GuiButtonBook) buttonList.get(i);
+				if (btn.func_146115_a() && btn.getTooltip() != null) 
 				{
-					String[] desc = { "test"+btn.id};
-			 
-					drawHoveringText(Arrays.asList(desc), x, y, fontRendererObj);
+					//it takes a list, one on each line. but we use single line tooltips
+					drawHoveringText(Arrays.asList(new String[]{ btn.getTooltip()}), x, y, fontRendererObj);
 				}
 			}
 		}
-	    /**
-	     * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-	     * this button.
-	    
-	  
-		if(this.buttonNew.getHoverState(this.buttonNew.enabled) == 2)
-		{
-			ArrayList<String> tooltips = new ArrayList<String>();
-			tooltips.add("test");
-			
-			//hoverhttp://www.minecraftforge.net/forum/index.php?topic=29228.0
-			
-			this.func_146283_a(tooltips, buttonNew.xPosition, buttonNew.yPosition);
-		}
-		*/
-		
-		
 	}
 	@Override
 	protected void actionPerformed(GuiButton btn)
