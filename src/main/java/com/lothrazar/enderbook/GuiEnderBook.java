@@ -51,8 +51,8 @@ public class GuiEnderBook  extends GuiScreen
 			buttonID = list.get(i).index;
 		//	buttonID++;
 			y = 40 + 10 * (buttonID);
-			
-			buttonList.add(new GuiButton(buttonID, x,y,w,h,StatCollector.translateToLocal("gui.enderbook.go")));
+			//TODO: coordinates on the button?
+			buttonList.add(new GuiButton(buttonID, x,y,w,h,buttonID+ " "+StatCollector.translateToLocal("gui.enderbook.go")));
 
 			//buttonID++;
 		}

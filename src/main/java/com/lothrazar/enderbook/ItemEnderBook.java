@@ -57,7 +57,9 @@ public class ItemEnderBook extends ItemTool
 	{
 		int empty = itemStack.stackTagCompound.getInteger(KEY_LARGEST);
 	
-		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);
+		if(empty == 0) {empty = 1;}//first index is 1 not zero
+		
+		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);//save the next empty one
 		return empty;
 	}
 	@Override
