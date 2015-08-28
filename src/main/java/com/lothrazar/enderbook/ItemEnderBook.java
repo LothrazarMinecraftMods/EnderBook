@@ -55,7 +55,8 @@ public class ItemEnderBook extends ItemTool
 	}
 	public static int getEmptySlot(ItemStack itemStack)
 	{
-		int empty =  itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+		int empty = itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+	
 		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);
 		return empty;
 	}

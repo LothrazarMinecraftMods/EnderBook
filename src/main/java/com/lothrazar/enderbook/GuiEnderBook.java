@@ -48,12 +48,13 @@ public class GuiEnderBook  extends GuiScreen
 		for(int i = 0; i < list.size(); i++)
 		{
 			x = (this.width - 400) / 2 - 2;
-			buttonID++;
-			y = 40 + 5 * (buttonID);
+			buttonID = list.get(i).index;
+		//	buttonID++;
+			y = 40 + 10 * (buttonID);
 			
-			buttonList.add(new GuiButton(buttonID++, x,y,w,h,StatCollector.translateToLocal("gui.enderbook.go")));
+			buttonList.add(new GuiButton(buttonID, x,y,w,h,StatCollector.translateToLocal("gui.enderbook.go")));
 
-			buttonID++;
+			//buttonID++;
 		}
 	}
  
