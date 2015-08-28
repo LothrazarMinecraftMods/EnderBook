@@ -15,7 +15,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class ItemEnderBook extends ItemTool
+public class ItemEnderBook extends Item
 { 
 	public static String KEY_LOC = "location"; 
 	public static String KEY_LARGEST = "loc_largest"; 
@@ -25,7 +25,7 @@ public class ItemEnderBook extends ItemTool
 	
 	public ItemEnderBook( )
 	{  
-		super(1.0F,Item.ToolMaterial.WOOD, Sets.newHashSet()); 
+		super(); //1.0F,Item.ToolMaterial.WOOD, Sets.newHashSet()
     	//this.setMaxDamage(DURABILITY);
 		this.setMaxStackSize(1);
     	setCreativeTab(CreativeTabs.tabTransport) ; 
