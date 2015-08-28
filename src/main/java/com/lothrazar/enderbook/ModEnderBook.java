@@ -29,8 +29,8 @@ public class ModEnderBook
 	public static ModEnderBook instance;
 	@SidedProxy(clientSide = "com.lothrazar.enderbook.ClientProxy", serverSide = "com.lothrazar.enderbook.CommonProxy")
 	public static CommonProxy proxy;
-//	public static Logger logger;
-	//public static Configuration config;
+	//public static Logger logger;
+	public static ConfigSettings config;
 	public final static String MODID = "enderbook";
 	public static String TEXTURE_LOCATION = MODID+":";
 	public static final SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
@@ -43,7 +43,7 @@ public class ModEnderBook
 	{ 
 		//logger = event.getModLog();
 		
-		//config = new Configuration(event.getSuggestedConfigurationFile());
+		config = new ConfigSettings(new Configuration(event.getSuggestedConfigurationFile()));
  
 		MinecraftForge.EVENT_BUS.register(instance);
 		FMLCommonHandler.instance().bus().register(instance);

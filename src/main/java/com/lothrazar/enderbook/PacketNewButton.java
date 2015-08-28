@@ -33,7 +33,7 @@ public class PacketNewButton  implements IMessage, IMessageHandler<PacketNewButt
 		//since we are on the server right now:
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
 		//otherwise, on the client we would use  Minecraft.getMinecraft().thePlayer;
-
+	
 		ItemEnderBook.saveCurrentLocation(player,message.name);
 		
 		

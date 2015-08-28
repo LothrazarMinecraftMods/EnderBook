@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 
 
 
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;//http://www.minecraftforge.net/forum/index.php?topic=22378.0
 import net.minecraft.client.gui.GuiScreen;
@@ -50,8 +51,13 @@ public class GuiEnderBook  extends GuiScreen
 		buttonNew = new GuiButtonBook(buttonIdNew, this.width/2,y,w,h,StatCollector.translateToLocal("gui.enderbook.new"));
 
 		buttonList.add(buttonNew);
-		
-		 
+	
+		if(entityPlayer.getHeldItem() != null && 
+				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ModEnderBook.config.maximumSaved)
+		{
+			buttonNew.enabled = false;//also a tooltip?
+		}
+
 		
 		txtNew = new GuiTextField(this.fontRendererObj,this.width/2 + w + 8,y,w,h);
 		txtNew.setMaxStringLength(10);
@@ -131,7 +137,7 @@ public class GuiEnderBook  extends GuiScreen
 	@Override
 	public boolean doesGuiPauseGame()
 	{
-		return false;
+		return ModEnderBook.config.doesPauseGame;
 	}
 	
 	//http://www.minecraftforge.net/forum/index.php?topic=22378.0
