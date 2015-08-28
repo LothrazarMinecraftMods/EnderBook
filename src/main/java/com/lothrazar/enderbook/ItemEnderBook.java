@@ -93,15 +93,13 @@ public class ItemEnderBook extends ItemTool
 	     } 
 	 }*/
 
-	public static void saveCurrentLocation(EntityPlayer entityPlayer) 
+	public static void saveCurrentLocation(EntityPlayer entityPlayer,String name) 
 	{ 
 		if (entityPlayer.getHeldItem().stackTagCompound == null) {entityPlayer.getHeldItem().stackTagCompound = new NBTTagCompound();}
 	
 		int id = getEmptySlot(entityPlayer.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
-    	BookLocation loc = new BookLocation(id,entityPlayer  );
-    	 
-		System.out.println("new loc "+id);
-		
+    	BookLocation loc = new BookLocation(id,entityPlayer  ,name);
+    	  
 		entityPlayer.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + id, loc.toCSV());		
 	} 
 	
