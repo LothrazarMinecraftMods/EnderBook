@@ -1,6 +1,7 @@
 package com.lothrazar.enderbook;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.lwjgl.input.Keyboard;
 
@@ -27,6 +28,7 @@ public class GuiEnderBook  extends GuiScreen
 	}
 	int buttonCount = 10;
 	public static int buttonIdNew;
+	GuiButton buttonNew;
 	@Override
 	public void initGui()
 	{
@@ -35,13 +37,14 @@ public class GuiEnderBook  extends GuiScreen
 		ItemStack book = entityPlayer.getHeldItem();
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
-		int buttonID = 0, w = 52,h = 20 ,x,y;
+		int buttonID = 0, w = 52,h = 20 ,x,y = 40, ypad = 5;
 		buttonIdNew = buttonID;
 		
 		 ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
 		 
+		 buttonNew = new GuiButton(buttonIdNew, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new"));
 		//one button to create new waypoints. all the other ones just use a waypoint
-		buttonList.add(new GuiButton(buttonIdNew, this.width/2,20,w,h,StatCollector.translateToLocal("gui.enderbook.new")));
+		buttonList.add(buttonNew);
 // on new clicked, we want the server to run ItemEnderBook.saveCurrentLocation
 		
 		//System.out.println("init with this many "+list.size());
@@ -51,20 +54,58 @@ public class GuiEnderBook  extends GuiScreen
 			buttonID = list.get(i).id;
 			System.out.println("new button with id "+buttonID);
 		//	buttonID++;
-			y = 40 + 10 * (buttonID);
+			y += h + ypad;
 			//TODO: coordinates on the button?
-			buttonList.add(new GuiButton(buttonID, x,y,w,h,buttonID+ " "+StatCollector.translateToLocal("gui.enderbook.go")));
+			
+			//buttonID+ " "+
+			buttonList.add(new GuiButton(buttonID, x,y,w,h
+					,StatCollector.translateToLocal("gui.enderbook.go")+" "+list.get(i).toDisplay()));
 
 			//buttonID++;
+			
+			//drawHoveringText
 		}
 	}
  
 	@Override
-	public void drawScreen(int par1, int par2, float par3)
+	public void drawScreen(int x, int y, float par3)
 	{
 		drawDefaultBackground();
 		drawCenteredString(fontRendererObj, StatCollector.translateToLocal("gui.enderbook.title"), width / 2, 6, 16777215);
-		super.drawScreen(par1, par2, par3);
+
+		super.drawScreen(x, y, par3);
+		
+		//http://www.minecraftforge.net/forum/index.php?topic=18043.0
+		for (int i = 0; i < buttonList.size(); i++) 
+		{
+			if (buttonList.get(i) instanceof GuiButton) 
+			{
+				GuiButton btn = (GuiButton) buttonList.get(i);
+				if (btn.func_146115_a()) 
+				{
+					String[] desc = { "test"+btn.id};
+			 
+					drawHoveringText(Arrays.asList(desc), x, y, fontRendererObj);
+				}
+			}
+		}
+	    /**
+	     * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
+	     * this button.
+	    
+	  
+		if(this.buttonNew.getHoverState(this.buttonNew.enabled) == 2)
+		{
+			ArrayList<String> tooltips = new ArrayList<String>();
+			tooltips.add("test");
+			
+			//hoverhttp://www.minecraftforge.net/forum/index.php?topic=29228.0
+			
+			this.func_146283_a(tooltips, buttonNew.xPosition, buttonNew.yPosition);
+		}
+		*/
+		
+		
 	}
 	@Override
 	protected void actionPerformed(GuiButton btn)
