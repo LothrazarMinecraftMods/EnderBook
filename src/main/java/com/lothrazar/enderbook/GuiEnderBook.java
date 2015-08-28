@@ -2,8 +2,10 @@ package com.lothrazar.enderbook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
+
 
 
 import net.minecraft.client.gui.GuiButton;
@@ -51,8 +53,8 @@ public class GuiEnderBook  extends GuiScreen
 		
 		 
 		
-		txtNew = new GuiTextField(this.fontRendererObj,this.width/2 + w,y,w,h);
-		txtNew.setMaxStringLength(20);
+		txtNew = new GuiTextField(this.fontRendererObj,this.width/2 + w + 8,y,w,h);
+		txtNew.setMaxStringLength(10);
 		//default to the current biome
 		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords((int)entityPlayer.posX, (int)entityPlayer.posY).biomeName);
 		txtNew.setFocused(true);
@@ -108,12 +110,24 @@ public class GuiEnderBook  extends GuiScreen
 			ModEnderBook.network.sendToServer(new PacketNewButton(txtNew.getText()));
 		}
 		else
+		{
 			ModEnderBook.network.sendToServer(new PacketWarpButton(btn.id));
-		
+			
+			//TODO: particles/sounds/etc., maybe verify dimensins>?
+			Random rand = this.entityPlayer.worldObj.rand;
+			
+			this.entityPlayer.worldObj.spawnParticle("portal", entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
+					, entityPlayer.posX+rand.nextDouble() * 0.6D 
+					, entityPlayer.posY+rand.nextDouble() * 0.6D 
+					, entityPlayer.posZ+rand.nextDouble() * 0.6D  );
+			
+			//RenderGlobal.s
+			//todo: also at future loc?
+		}
 		
 		this.entityPlayer.closeScreen();
-		
 	}
+	
 	@Override
 	public boolean doesGuiPauseGame()
 	{

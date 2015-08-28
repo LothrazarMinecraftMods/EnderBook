@@ -47,6 +47,8 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		//do player warp and stuff. just a test:
 		//player.setPositionAndUpdate(0, 99, 0);
 		 
+		//http://minecraft.gamepedia.com/Sounds.json
+		player.playSound("mob.endermen.portal", 1, 1);
 		
 		return null;
 	}
