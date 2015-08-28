@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiEnderBook  extends GuiScreen
 {
 	private final EntityPlayer entityPlayer;
-
+	final int btnsPerColumn = 8;
 	//public final ResourceLocation texture = new ResourceLocation(ModSamsContent.MODID, "textures/enderbook/textures/gui/book_ender.png" );
 	
 	public GuiEnderBook(EntityPlayer entityPlayer)
@@ -68,12 +68,19 @@ public class GuiEnderBook  extends GuiScreen
 		GuiButtonBook b;
 		BookLocation loc;
 		String buttonText;
-		y = 40;
+		int yTop = 40;
+		y = yTop;
 		for(int i = 0; i < list.size(); i++)
 		{
 			loc = list.get(i);
 			buttonText = (loc.display == null) ? StatCollector.translateToLocal("gui.enderbook.go") : loc.display;
-			y += h + ypad;
+			
+			
+			if(i % btnsPerColumn == 0)  //do we start a new row?
+				y = yTop;
+			else 
+				y += h + ypad;
+			
 			b = new GuiButtonBook(loc.id, x,y,w,h,buttonText);//+" "+loc.id
 			b.setTooltip(list.get(i).coordsDisplay());
 		
