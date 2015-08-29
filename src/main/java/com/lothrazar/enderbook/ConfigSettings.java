@@ -6,6 +6,7 @@ public class ConfigSettings
 {
 	boolean doesPauseGame;
 	boolean craftNetherStar;
+	boolean showCoordTooltips;
 	int maximumSaved;
 	Configuration config;
 	public ConfigSettings(Configuration c)
@@ -18,7 +19,8 @@ public class ConfigSettings
 		
 		craftNetherStar = config.getBoolean("needs_nether_star", category, true, "The Ender Book requires a nether star to craft.");
 		
-
+		showCoordTooltips = config.getBoolean("show_coordinates_tooltip", category, true, "Waypoint buttons will show the exact coordinates in a hover tooltip.");
+		
 	    //TODO: a config entry so it takes durability?
 		//player.getCurrentEquippedItem().damageItem(1, player);
 		maximumSaved = config.getInt("max_saved", category, 10, 5, 20, "How many waypoints the book can store");

@@ -117,18 +117,20 @@ public class GuiEnderBook  extends GuiScreen
 		super.drawScreen(x, y, par3);
 		
 		//http://www.minecraftforge.net/forum/index.php?topic=18043.0
-		for (int i = 0; i < buttonList.size(); i++) 
-		{
-			if (buttonList.get(i) instanceof GuiButtonBook) 
+		
+		if(ModEnderBook.config.showCoordTooltips)
+			for (int i = 0; i < buttonList.size(); i++) 
 			{
-				GuiButtonBook btn = (GuiButtonBook) buttonList.get(i);
-				if (btn.func_146115_a() && btn.getTooltip() != null) 
+				if (buttonList.get(i) instanceof GuiButtonBook) 
 				{
-					//it takes a list, one on each line. but we use single line tooltips
-					drawHoveringText(Arrays.asList(new String[]{ btn.getTooltip()}), x, y, fontRendererObj);
+					GuiButtonBook btn = (GuiButtonBook) buttonList.get(i);
+					if (btn.func_146115_a() && btn.getTooltip() != null) 
+					{
+						//it takes a list, one on each line. but we use single line tooltips
+						drawHoveringText(Arrays.asList(new String[]{ btn.getTooltip()}), x, y, fontRendererObj);
+					}
 				}
 			}
-		}
 	}
 	@Override
 	protected void actionPerformed(GuiButton btn)
