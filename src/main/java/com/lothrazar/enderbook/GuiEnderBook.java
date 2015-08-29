@@ -144,7 +144,7 @@ public class GuiEnderBook  extends GuiScreen
 		}
 		else if(btn.id >= DELETE_OFFSET)
 		{
-			System.out.println("TODO: DEL");
+			ModEnderBook.network.sendToServer(new PacketDeleteButton(btn.id));
 		}
 		else
 		{

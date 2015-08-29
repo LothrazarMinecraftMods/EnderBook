@@ -7,11 +7,11 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpButton, IMessage>
+public class PacketDeleteButton  implements IMessage, IMessageHandler<PacketDeleteButton, IMessage>
 {
 	public int slot;
-	public PacketWarpButton(){}
-	public PacketWarpButton(int s)
+	public PacketDeleteButton(){}
+	public PacketDeleteButton(int s)
 	{
 		slot=s;
 	}
@@ -29,11 +29,11 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 	}
 	
 	@Override
-	public IMessage onMessage(PacketWarpButton message, MessageContext ctx)
+	public IMessage onMessage(PacketDeleteButton message, MessageContext ctx)
 	{
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
-
-		ItemEnderBook.teleport(player, message.slot);
+	
+		ItemEnderBook.deleteWaypoint(player, message.slot);
 
 		//http://minecraft.gamepedia.com/Sounds.json
 		player.playSound("mob.endermen.portal", 1, 1);

@@ -23,12 +23,10 @@ public class ItemEnderBook extends Item
 	
 	public ItemEnderBook( )
 	{  
-		super(); //1.0F,Item.ToolMaterial.WOOD, Sets.newHashSet()
-    	//this.setMaxDamage(DURABILITY);
+		super(); 
 		this.setMaxStackSize(1);
     	setCreativeTab(CreativeTabs.tabTransport) ; 
 	}
-	
 	
 	public static ArrayList<BookLocation> getLocations(ItemStack itemStack)
 	{
@@ -49,6 +47,7 @@ public class ItemEnderBook extends Item
 		 
 		 return list;
 	}
+	
 	public static int getEmptySlot(ItemStack itemStack)
 	{
 		int empty = itemStack.stackTagCompound.getInteger(KEY_LARGEST);
@@ -58,45 +57,20 @@ public class ItemEnderBook extends Item
 		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);//save the next empty one
 		return empty;
 	}
-	/*
-	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) 
-	{  
-	     ItemStack held = player.getCurrentEquippedItem();
 
-		 int slot = player.inventory.currentItem + 1;
-			
-	     String KEY;
-	     Location loc;
-	     String display;
-	     for(int i = 1; i <= 9; i++)
-	     {
-
-	     	 KEY = KEY_LOC + "_" + i;
-
-	 		String csv = itemStack.stackTagCompound.getString(KEY);
-
-			if(csv == null || csv.isEmpty()) {continue;} 
-			loc = new Location(csv);
- 
-			if(slot == i && held != null && held.equals(itemStack))
-				display = EnumChatFormatting.GRAY+ "["+ EnumChatFormatting.RED + i +EnumChatFormatting.GRAY+ "] " ;
-			else
-				display = EnumChatFormatting.GRAY+ "["+ i + "] " ;
-			
-			 
-	    	 list.add(display+EnumChatFormatting.DARK_GREEN + loc.toDisplay());
-	     } 
-	 }*/
-
-	public static void saveCurrentLocation(EntityPlayer entityPlayer,String name) 
-	{ 
-		if (entityPlayer.getHeldItem().stackTagCompound == null) {entityPlayer.getHeldItem().stackTagCompound = new NBTTagCompound();}
+	public static void deleteWaypoint(EntityPlayer player, int slot) 
+	{
+		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + slot, null);		
+	}
 	
-		int id = getEmptySlot(entityPlayer.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
-    	BookLocation loc = new BookLocation(id,entityPlayer  ,name);
+	public static void saveCurrentLocation(EntityPlayer player,String name) 
+	{ 
+		if (player.getHeldItem().stackTagCompound == null) {player.getHeldItem().stackTagCompound = new NBTTagCompound();}
+	
+		int id = getEmptySlot(player.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
+    	BookLocation loc = new BookLocation(id,player  ,name);
     	  
-		entityPlayer.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + id, loc.toCSV());		
+		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + id, loc.toCSV());		
 	} 
 	
 	private static BookLocation getLocation(ItemStack stack, int slot)
@@ -171,5 +145,6 @@ public class ItemEnderBook extends Item
 				);
 
 	}
+
 }
  
