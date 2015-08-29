@@ -75,7 +75,7 @@ public class GuiEnderBook  extends GuiScreen
 		txtNew.setFocused(true);
 		
 		GuiButtonBook btn;
-		GuiButton del;
+		//GuiButton del;
 		BookLocation loc;
 		String buttonText;
 		int yStart = 45;
@@ -102,9 +102,9 @@ public class GuiEnderBook  extends GuiScreen
 			btn.enabled = (loc.dimension == this.entityPlayer.dimension); 
 			buttonList.add(btn);
 			
-			
+			/*
 			del = new GuiButton(loc.id+DELETE_OFFSET, x-20,y,w/4,h,"X");
-			buttonList.add(del);
+			buttonList.add(del);*/
 		}
 	}
  

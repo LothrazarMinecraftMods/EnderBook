@@ -41,7 +41,7 @@ public class ItemEnderBook extends Item
 			 String csv = itemStack.stackTagCompound.getString(KEY);
 	
 			 if(csv == null || csv.isEmpty()) {continue;} 
-		 
+		
 			 list.add(new BookLocation(csv));
 		 } 
 		 
@@ -60,7 +60,9 @@ public class ItemEnderBook extends Item
 
 	public static void deleteWaypoint(EntityPlayer player, int slot) 
 	{
-		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + slot, null);		
+		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + slot, null);	
+		
+		System.out.println("DELETE "+slot);
 	}
 	
 	public static void saveCurrentLocation(EntityPlayer player,String name) 
@@ -144,6 +146,10 @@ public class ItemEnderBook extends Item
 				'b', Items.book
 				);
 
+		
+		
+		//if you want to clean out the book and start over
+		GameRegistry.addShapelessRecipe(new ItemStack(itemEnderBook), new ItemStack(itemEnderBook));
 	}
 
 }
