@@ -35,6 +35,7 @@ public class GuiEnderBook  extends GuiScreen
 	public static int buttonIdNew;
 	GuiButton buttonNew;
 	GuiTextField txtNew;
+	final int DELETE_OFFSET = 1000;
 	@Override
 	public void initGui()
 	{
@@ -73,7 +74,8 @@ public class GuiEnderBook  extends GuiScreen
 		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords((int)entityPlayer.posX, (int)entityPlayer.posY).biomeName);
 		txtNew.setFocused(true);
 		
-		GuiButtonBook b;
+		GuiButtonBook btn;
+		GuiButton del;
 		BookLocation loc;
 		String buttonText;
 		int yStart = 45;
@@ -85,7 +87,6 @@ public class GuiEnderBook  extends GuiScreen
 			loc = list.get(i);
 			buttonText = (loc.display == null) ? StatCollector.translateToLocal("gui.enderbook.go") : loc.display;
 			
-			
 			if(i % btnsPerColumn == 0)  //do we start a new row?
 			{ 
 				x += w + 10;
@@ -96,12 +97,14 @@ public class GuiEnderBook  extends GuiScreen
 				y += h + ypad;
 			}
 			
-			b = new GuiButtonBook(loc.id, x,y,w,h,buttonText);//+" "+loc.id
-			b.setTooltip(list.get(i).coordsDisplay());
-		
-			b.enabled = (loc.dimension == this.entityPlayer.dimension);
-		
-			buttonList.add(b);
+			btn = new GuiButtonBook(loc.id, x,y,w,h,buttonText);//+" "+loc.id
+			btn.setTooltip(list.get(i).coordsDisplay()); 
+			btn.enabled = (loc.dimension == this.entityPlayer.dimension); 
+			buttonList.add(btn);
+			
+			
+			del = new GuiButton(loc.id+DELETE_OFFSET, x-20,y,w/4,h,"X");
+			buttonList.add(del);
 		}
 	}
  
@@ -138,6 +141,10 @@ public class GuiEnderBook  extends GuiScreen
 		if(btn.id == buttonIdNew)
 		{ 
 			ModEnderBook.network.sendToServer(new PacketNewButton(txtNew.getText()));
+		}
+		else if(btn.id >= DELETE_OFFSET)
+		{
+			System.out.println("TODO: DEL");
 		}
 		else
 		{
