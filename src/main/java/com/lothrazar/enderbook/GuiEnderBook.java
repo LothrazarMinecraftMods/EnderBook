@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiEnderBook  extends GuiScreen
 {
 	private final EntityPlayer entityPlayer;
-	final int btnsPerColumn = 8;
+	final int btnsPerColumn = 7;
 	//public final ResourceLocation texture = new ResourceLocation(ModSamsContent.MODID, "textures/enderbook/textures/gui/book_ender.png" );
 	
 	public GuiEnderBook(EntityPlayer entityPlayer)
@@ -43,15 +43,19 @@ public class GuiEnderBook  extends GuiScreen
 		ItemStack book = entityPlayer.getHeldItem();
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
-		int buttonID = 0, w = 70,h = 20 ,x = (this.width - 330) / 2,y = 20, ypad = 5;
+		int buttonID = 0, w = 70,h = 20 , ypad = 5;
 		buttonIdNew = buttonID;
 		
 		ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
 		
-		buttonNew = new GuiButtonBook(buttonIdNew, this.width/2,y,w,h,StatCollector.translateToLocal("gui.enderbook.new"));
+		buttonNew = new GuiButtonBook(buttonIdNew, 
+				this.width/2 - w,//x
+				20,//y
+				w,h,
+				StatCollector.translateToLocal("gui.enderbook.new"));
 
 		buttonList.add(buttonNew);
-	System.out.println("Currentsize= "+ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size());
+	//System.out.println("Currentsize= "+ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size());
 		if(entityPlayer.getHeldItem() != null && 
 				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ModEnderBook.config.maximumSaved)
 		{
@@ -59,7 +63,11 @@ public class GuiEnderBook  extends GuiScreen
 		}
 
 		
-		txtNew = new GuiTextField(this.fontRendererObj,this.width/2 + w + 8,y,w,h);
+		txtNew = new GuiTextField(this.fontRendererObj,
+				buttonNew.xPosition + buttonNew.width + 8,
+				buttonNew.yPosition, 
+				w,h);
+		
 		txtNew.setMaxStringLength(10);
 		//default to the current biome
 		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords((int)entityPlayer.posX, (int)entityPlayer.posY).biomeName);
@@ -68,8 +76,10 @@ public class GuiEnderBook  extends GuiScreen
 		GuiButtonBook b;
 		BookLocation loc;
 		String buttonText;
-		int yTop = 40;
-		y = yTop;
+		int yStart = 45;
+		int xStart = (this.width/10);
+		int x = xStart;
+		int y = yStart;
 		for(int i = 0; i < list.size(); i++)
 		{
 			loc = list.get(i);
@@ -77,9 +87,14 @@ public class GuiEnderBook  extends GuiScreen
 			
 			
 			if(i % btnsPerColumn == 0)  //do we start a new row?
-				y = yTop;
+			{ 
+				x += w + 10;
+				y = yStart;
+			}
 			else 
+			{
 				y += h + ypad;
+			}
 			
 			b = new GuiButtonBook(loc.id, x,y,w,h,buttonText);//+" "+loc.id
 			b.setTooltip(list.get(i).coordsDisplay());
