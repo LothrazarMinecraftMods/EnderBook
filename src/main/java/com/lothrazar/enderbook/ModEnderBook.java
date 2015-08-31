@@ -59,6 +59,7 @@ public class ModEnderBook
 		 int packetID = 0;
 		 network.registerMessage(PacketWarpButton.class, PacketWarpButton.class, packetID++, Side.SERVER);
 		 network.registerMessage(PacketNewButton.class, PacketNewButton.class, packetID++, Side.SERVER);
+		 network.registerMessage(PacketDeleteButton.class, PacketDeleteButton.class, packetID++, Side.SERVER);
 	}
  
 	@SubscribeEvent
