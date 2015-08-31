@@ -59,10 +59,8 @@ public class ItemEnderBook extends Item
 	}
 
 	public static void deleteWaypoint(EntityPlayer player, int slot) 
-	{
-		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + slot, null);	
-		
-		System.out.println("DELETE "+slot);
+	{	
+		player.getHeldItem().stackTagCompound.removeTag(KEY_LOC + "_" + slot);
 	}
 	
 	public static void saveCurrentLocation(EntityPlayer player,String name) 
@@ -94,17 +92,13 @@ public class ItemEnderBook extends Item
 		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
-		{
-			//System.out.println(" csv.isEmpty "+slot);
-
+		{ 
 			return;
 		}
 		
 		BookLocation loc = getLocation(player.getHeldItem(),slot);
 		if(player.dimension != loc.dimension)
-		{
-			//System.out.println("Mismatched dimensions "+slot);
-	
+		{ 
 			return;
 		}
 	 

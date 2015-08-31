@@ -49,7 +49,7 @@ public class GuiEnderBook  extends GuiScreen
 				StatCollector.translateToLocal("gui.enderbook.new"),buttonIdNew);
 
 		buttonList.add(buttonNew);
-	//System.out.println("Currentsize= "+ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size());
+ 
 		if(entityPlayer.getHeldItem() != null && 
 				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ModEnderBook.config.maximumSaved)
 		{
@@ -137,7 +137,6 @@ public class GuiEnderBook  extends GuiScreen
 		}
 		else if(btn instanceof GuiButtonDelete)
 		{
-			System.out.println("aciton Delete ");
 			ModEnderBook.network.sendToServer(new PacketDeleteButton( ((GuiButtonDelete)btn).getSlot() ));
 		}
 		else if(btn instanceof GuiButtonBook)
