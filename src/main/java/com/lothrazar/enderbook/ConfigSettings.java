@@ -22,9 +22,9 @@ public class ConfigSettings
 		
 		showCoordTooltips = config.getBoolean("show_coordinates_tooltip", category, true, "Waypoint buttons will show the exact coordinates in a hover tooltip.");
 
-		maximumSaved = config.getInt("max_saved", category, 10, 5, 20, "How many waypoints the book can store.");
+		maximumSaved = config.getInt("max_saved", category, 16, 1, 999, "How many waypoints the book can store.");
 		
-		btnsPerColumn = config.getInt("show_per_column", category, 7, 1, 30, "Number of waypoints per column.  Change this if they are going off the screen for your chosen GUI Scale.");
+		btnsPerColumn = config.getInt("show_per_column", category, 8, 1, 50, "Number of waypoints per column.  Change this if they are going off the screen for your chosen GUI Scale.");
 		
 		
 		if(config.hasChanged()){config.save();}

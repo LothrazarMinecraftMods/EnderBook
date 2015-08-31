@@ -36,7 +36,7 @@ public class GuiEnderBook  extends GuiScreen
 		ItemStack book = entityPlayer.getHeldItem();
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
-		int buttonID = 0, w = 70,h = 20 , ypad = 1, delete_w = 20, xpad = 1;
+		int buttonID = 0, w = 70,h = 20 , ypad = 1, delete_w = 20, rowpad = 8;
 		buttonIdNew = buttonID;
 		buttonID++;
 		ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
@@ -81,7 +81,7 @@ public class GuiEnderBook  extends GuiScreen
 			
 			if(i % ModEnderBook.config.btnsPerColumn == 0)  //do we start a new row?
 			{ 
-				x += w + delete_w + xpad;
+				x += w + delete_w + rowpad;
 				y = yStart;
 			}
 			else 
@@ -95,7 +95,7 @@ public class GuiEnderBook  extends GuiScreen
 			buttonList.add(btn);
 			
 			
-			del = new GuiButtonDelete(buttonID++, x - delete_w - 3,y,delete_w,h,"X",loc.id);
+			del = new GuiButtonDelete(buttonID++, x - delete_w - 2,y,delete_w,h,"X",loc.id);
 			buttonList.add(del);
 		}
 	}
