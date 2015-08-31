@@ -33,8 +33,8 @@ public class ItemEnderBook extends Item
 		 ArrayList<BookLocation> list = new  ArrayList<BookLocation>();
 		 
 		 String KEY; 
- 
-		 for(int i = 0; i <= ModEnderBook.config.maximumSaved; i++)
+		 int end = getLargestSlot(itemStack);
+		 for(int i = 0; i <= end; i++)
 		 {
 		 	 KEY = KEY_LOC + "_" + i;
 
@@ -47,8 +47,12 @@ public class ItemEnderBook extends Item
 		 
 		 return list;
 	}
-	
-	public static int getEmptySlot(ItemStack itemStack)
+
+	public static int getLargestSlot(ItemStack itemStack)
+	{
+		return itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+	}
+	public static int getEmptySlotAndIncrement(ItemStack itemStack)
 	{
 		int empty = itemStack.stackTagCompound.getInteger(KEY_LARGEST);
 	
@@ -67,8 +71,10 @@ public class ItemEnderBook extends Item
 	{ 
 		if (player.getHeldItem().stackTagCompound == null) {player.getHeldItem().stackTagCompound = new NBTTagCompound();}
 	
-		int id = getEmptySlot(player.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
-    	BookLocation loc = new BookLocation(id,player  ,name);
+		int id = getEmptySlotAndIncrement(player.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
+    	
+		
+		BookLocation loc = new BookLocation(id,player  ,name);
     	  
 		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + id, loc.toCSV());		
 	} 
