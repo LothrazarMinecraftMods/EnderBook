@@ -18,7 +18,7 @@ public class GuiEnderBook  extends GuiScreen
 {
 	private final EntityPlayer entityPlayer;
 	//public final ResourceLocation texture = new ResourceLocation(ModSamsContent.MODID, "textures/enderbook/textures/gui/book_ender.png" );
-	
+	final int maxNameLen = 10;
 	public GuiEnderBook(EntityPlayer entityPlayer)
 	{
 		this.entityPlayer = entityPlayer;
@@ -36,7 +36,7 @@ public class GuiEnderBook  extends GuiScreen
 		ItemStack book = entityPlayer.getHeldItem();
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
-		int buttonID = 0, w = 70,h = 20 , ypad = 5;
+		int buttonID = 0, w = 70,h = 20 , ypad = 1, delete_w = 20, xpad = 1;
 		buttonIdNew = buttonID;
 		buttonID++;
 		ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
@@ -61,7 +61,7 @@ public class GuiEnderBook  extends GuiScreen
 				buttonNew.yPosition, 
 				w,h);
 		
-		txtNew.setMaxStringLength(10);
+		txtNew.setMaxStringLength(maxNameLen);
 		//default to the current biome
 		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords((int)entityPlayer.posX, (int)entityPlayer.posY).biomeName);
 		txtNew.setFocused(true);
@@ -81,7 +81,7 @@ public class GuiEnderBook  extends GuiScreen
 			
 			if(i % ModEnderBook.config.btnsPerColumn == 0)  //do we start a new row?
 			{ 
-				x += w + 10;
+				x += w + delete_w + xpad;
 				y = yStart;
 			}
 			else 
@@ -95,7 +95,7 @@ public class GuiEnderBook  extends GuiScreen
 			buttonList.add(btn);
 			
 			
-			del = new GuiButtonDelete(buttonID++, x - 20,y,w/4,h,"X",loc.id);
+			del = new GuiButtonDelete(buttonID++, x - delete_w - 3,y,delete_w,h,"X",loc.id);
 			buttonList.add(del);
 		}
 	}
