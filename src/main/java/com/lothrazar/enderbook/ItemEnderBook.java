@@ -89,33 +89,29 @@ public class ItemEnderBook extends Item
 	}
 	
 	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
-	{ 
-		//int slot = entityPlayer.inventory.currentItem+1;
-		System.out.println("tp to "+slot);
-    
+	{  
     	ItemStack stack = player.getHeldItem();
 		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
 		{
-			System.out.println(" csv.isEmpty");
-			//Relay.addChatMessage(event.entityPlayer, "No location saved at "+KEY);
+			//System.out.println(" csv.isEmpty "+slot);
+
 			return;
 		}
 		
 		BookLocation loc = getLocation(player.getHeldItem(),slot);
-		if(player.dimension != loc.dimension)// TODO: Reference dim nums
+		if(player.dimension != loc.dimension)
 		{
-			System.out.println("Mismatched dimensions");
-			//player.addChatMessage(new ChatTranslationComponent("Mismatched dimensions"));
-			//Chat.addMessage(event.entityPlayer, "Only useable in the overworld");
+			//System.out.println("Mismatched dimensions "+slot);
+	
 			return;
 		}
 	 
 	    player.setPositionAndUpdate(loc.X,loc.Y,loc.Z); 
 
 	    
-	    //TODO: a config entry so it takes durability?
+	    //TODO: maybe 	a config entry so it takes durability?
 		//player.getCurrentEquippedItem().damageItem(1, player);
 	}
 	 
@@ -135,7 +131,7 @@ public class ItemEnderBook extends Item
 				"eee", 
 				'e', Items.ender_pearl, 
 				'b', Items.book,
-				'n', Items.nether_star //TODO : a config entry that decides if it uses a star or not
+				'n', Items.nether_star  
 				);
 		else
 			GameRegistry.addRecipe(new ItemStack(itemEnderBook), 
@@ -146,8 +142,6 @@ public class ItemEnderBook extends Item
 				'b', Items.book
 				);
 
-		
-		
 		//if you want to clean out the book and start over
 		GameRegistry.addShapelessRecipe(new ItemStack(itemEnderBook), new ItemStack(itemEnderBook));
 	}

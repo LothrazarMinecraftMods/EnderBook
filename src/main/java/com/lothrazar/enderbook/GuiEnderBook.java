@@ -2,21 +2,14 @@ package com.lothrazar.enderbook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
-
-import org.lwjgl.input.Keyboard;
-
-
-
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;//http://www.minecraftforge.net/forum/index.php?topic=22378.0
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -114,7 +107,7 @@ public class GuiEnderBook  extends GuiScreen
 		drawDefaultBackground();
 		drawCenteredString(fontRendererObj, StatCollector.translateToLocal("gui.enderbook.title"), width / 2, 6, 16777215);
 		
-		//TODO::: http://www.minecraftforge.net/forum/index.php?topic=22378.0
+		// http://www.minecraftforge.net/forum/index.php?topic=22378.0
 		txtNew.drawTextBox();
 		
 		super.drawScreen(x, y, par3);
@@ -150,16 +143,14 @@ public class GuiEnderBook  extends GuiScreen
 		{
 			ModEnderBook.network.sendToServer(new PacketWarpButton(btn.id));
 			
-			//TODO: particles/sounds/etc., maybe verify dimensins>?
-			Random rand = this.entityPlayer.worldObj.rand;
+			World world = this.entityPlayer.worldObj;
+ 
 			
-			this.entityPlayer.worldObj.spawnParticle("portal", entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
-					, entityPlayer.posX+rand.nextDouble() * 0.6D 
-					, entityPlayer.posY+rand.nextDouble() * 0.6D 
-					, entityPlayer.posZ+rand.nextDouble() * 0.6D  );
-			
-			//RenderGlobal.s
-			//todo: also at future loc?
+			world.spawnParticle("portal", entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
+					, entityPlayer.posX + world.rand.nextDouble() * 0.6D 
+					, entityPlayer.posY + world.rand.nextDouble() * 0.6D 
+					, entityPlayer.posZ + world.rand.nextDouble() * 0.6D  );
+
 		}
 		
 		this.entityPlayer.closeScreen();

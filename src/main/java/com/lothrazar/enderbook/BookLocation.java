@@ -1,7 +1,6 @@
 package com.lothrazar.enderbook;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
  
 public class BookLocation
 {
