@@ -39,14 +39,14 @@ public class GuiEnderBook  extends GuiScreen
 
 		int buttonID = 0, w = 70,h = 20 , ypad = 5;
 		buttonIdNew = buttonID;
-		
+		buttonID++;
 		ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
 		
 		buttonNew = new GuiButtonBook(buttonIdNew, 
 				this.width/2 - w,//x
 				20,//y
 				w,h,
-				StatCollector.translateToLocal("gui.enderbook.new"));
+				StatCollector.translateToLocal("gui.enderbook.new"),buttonIdNew);
 
 		buttonList.add(buttonNew);
 	//System.out.println("Currentsize= "+ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size());
@@ -68,7 +68,7 @@ public class GuiEnderBook  extends GuiScreen
 		txtNew.setFocused(true);
 		
 		GuiButtonBook btn;
-		//GuiButton del;
+		GuiButton del;
 		BookLocation loc;
 		String buttonText;
 		int yStart = 45;
@@ -90,14 +90,14 @@ public class GuiEnderBook  extends GuiScreen
 				y += h + ypad;
 			}
 			
-			btn = new GuiButtonBook(loc.id, x,y,w,h,buttonText);//+" "+loc.id
+			btn = new GuiButtonBook(buttonID++, x,y,w,h,buttonText,loc.id);//+" "+loc.id
 			btn.setTooltip(list.get(i).coordsDisplay()); 
 			btn.enabled = (loc.dimension == this.entityPlayer.dimension); 
 			buttonList.add(btn);
 			
-			/*
-			del = new GuiButton(loc.id+DELETE_OFFSET, x-20,y,w/4,h,"X");
-			buttonList.add(del);*/
+			
+			del = new GuiButtonDelete(buttonID++, x - 20,y,w/4,h,"X",loc.id);
+			buttonList.add(del);
 		}
 	}
  
@@ -135,13 +135,13 @@ public class GuiEnderBook  extends GuiScreen
 		{ 
 			ModEnderBook.network.sendToServer(new PacketNewButton(txtNew.getText()));
 		}
-		else if(btn.id >= DELETE_OFFSET)
+		else if(btn instanceof GuiButtonDelete)
 		{
-			ModEnderBook.network.sendToServer(new PacketDeleteButton(btn.id));
+			ModEnderBook.network.sendToServer(new PacketDeleteButton( ((GuiButtonDelete)btn).getSlot() ));
 		}
-		else
+		else if(btn instanceof GuiButtonBook)
 		{
-			ModEnderBook.network.sendToServer(new PacketWarpButton(btn.id));
+			ModEnderBook.network.sendToServer(new PacketWarpButton( ((GuiButtonBook)btn).getSlot() ));
 			
 			World world = this.entityPlayer.worldObj;
  
