@@ -17,7 +17,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiEnderBook  extends GuiScreen
 {
 	private final EntityPlayer entityPlayer;
-	final int btnsPerColumn = 7;
 	//public final ResourceLocation texture = new ResourceLocation(ModSamsContent.MODID, "textures/enderbook/textures/gui/book_ender.png" );
 	
 	public GuiEnderBook(EntityPlayer entityPlayer)
@@ -80,7 +79,7 @@ public class GuiEnderBook  extends GuiScreen
 			loc = list.get(i);
 			buttonText = (loc.display == null) ? StatCollector.translateToLocal("gui.enderbook.go") : loc.display;
 			
-			if(i % btnsPerColumn == 0)  //do we start a new row?
+			if(i % ModEnderBook.config.btnsPerColumn == 0)  //do we start a new row?
 			{ 
 				x += w + 10;
 				y = yStart;
