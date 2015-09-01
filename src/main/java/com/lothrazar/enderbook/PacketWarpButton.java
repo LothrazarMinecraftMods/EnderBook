@@ -1,6 +1,8 @@
 package com.lothrazar.enderbook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -38,11 +40,15 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		
 		if(cost != 0 && UtilExperience.getExpTotal(player) < cost )
 		{
-			//TODO: send chat message to playyer/ send sound effect, etc
-			System.out.println("not enough, you have only " +UtilExperience.getExpTotal(player)+ " need "+cost);
+			//TODO: sound effect ???
+			//System.out.println("exp:" +UtilExperience.getExpTotal(player)+ " / "+cost);
+			
+			
+			player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("gui.chatexp")));
 		}
 		else
 		{
+			//TODO: sound effect ???
 			ItemEnderBook.teleport(player, message.slot);
 			
 			//then drain

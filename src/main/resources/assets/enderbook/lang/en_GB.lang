@@ -2,3 +2,4 @@ item.book_ender.name=Ender Book
 gui.enderbook.new=New
 gui.enderbook.go=Go
 gui.enderbook.title=Ender Book Waypoints
+gui.chatexp=Not enough experience

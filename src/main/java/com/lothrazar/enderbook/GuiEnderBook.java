@@ -107,7 +107,8 @@ public class GuiEnderBook  extends GuiScreen
 		drawCenteredString(fontRendererObj, StatCollector.translateToLocal("gui.enderbook.title"), width / 2, 6, 16777215);
 		
 		// http://www.minecraftforge.net/forum/index.php?topic=22378.0
-		txtNew.drawTextBox();
+		//no idea why this is sometimes randomly null and only on world start if i open it too quick??
+		if(txtNew!=null)txtNew.drawTextBox();
 		
 		super.drawScreen(x, y, par3);
 		
