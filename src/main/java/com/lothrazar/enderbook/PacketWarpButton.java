@@ -31,9 +31,23 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 	public IMessage onMessage(PacketWarpButton message, MessageContext ctx)
 	{
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
-
-		ItemEnderBook.teleport(player, message.slot);
-
+		
+		
+		int cost = (int)ModEnderBook.config.expCostPerTeleport;
+		
+		
+		if(cost != 0 && UtilExperience.getExpTotal(player) < cost )
+		{
+			//TODO: send chat message to playyer/ send sound effect, etc
+			System.out.println("not enough, you have only " +UtilExperience.getExpTotal(player)+ " need "+cost);
+		}
+		else
+		{
+			ItemEnderBook.teleport(player, message.slot);
+			
+			//then drain
+			UtilExperience.drainExp(player, cost);
+		}
 		//http://minecraft.gamepedia.com/Sounds.json
 		player.playSound("mob.endermen.portal", 1, 1);
 		

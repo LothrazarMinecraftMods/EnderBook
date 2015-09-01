@@ -8,7 +8,8 @@ public class ConfigSettings
 	boolean craftNetherStar;
 	boolean showCoordTooltips;
 	int maximumSaved;
-	int btnsPerColumn = 7;
+	int btnsPerColumn;
+	int expCostPerTeleport;
 	Configuration config;
 	public ConfigSettings(Configuration c)
 	{
@@ -25,6 +26,8 @@ public class ConfigSettings
 		maximumSaved = config.getInt("max_saved", category, 16, 1, 999, "How many waypoints the book can store.");
 		
 		btnsPerColumn = config.getInt("show_per_column", category, 8, 1, 50, "Number of waypoints per column.  Change this if they are going off the screen for your chosen GUI Scale.");
+		
+		expCostPerTeleport = config.getInt("exp_per_teleport", category, 10, 0, 9999, "How many experience points are drained from the player on each teleport.  Set to zero for free teleports to your waypoints.");
 		
 		
 		if(config.hasChanged()){config.save();}
