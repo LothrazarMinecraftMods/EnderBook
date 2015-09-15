@@ -3,9 +3,9 @@ package com.lothrazar.enderbook;
 import java.util.ArrayList;
 import java.util.List; 
 
-import com.google.common.collect.Sets;   
+//import com.google.common.collect.Sets;   
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -38,7 +38,7 @@ public class ItemEnderBook extends Item
 		 {
 		 	 KEY = KEY_LOC + "_" + i;
 
-			 String csv = itemStack.stackTagCompound.getString(KEY);
+			 String csv = itemStack.getTagCompound().getString(KEY);
 	
 			 if(csv == null || csv.isEmpty()) {continue;} 
 		
@@ -50,38 +50,38 @@ public class ItemEnderBook extends Item
 
 	public static int getLargestSlot(ItemStack itemStack)
 	{
-		return itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+		return itemStack.getTagCompound().getInteger(KEY_LARGEST);
 	}
 	public static int getEmptySlotAndIncrement(ItemStack itemStack)
 	{
-		int empty = itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+		int empty = itemStack.getTagCompound().getInteger(KEY_LARGEST);
 	
 		if(empty == 0) {empty = 1;}//first index is 1 not zero
 		
-		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);//save the next empty one
+		itemStack.getTagCompound().setInteger(KEY_LARGEST,empty+1);//save the next empty one
 		return empty;
 	}
 
 	public static void deleteWaypoint(EntityPlayer player, int slot) 
 	{	
-		player.getHeldItem().stackTagCompound.removeTag(KEY_LOC + "_" + slot);
+		player.getHeldItem().getTagCompound().removeTag(KEY_LOC + "_" + slot);
 	}
 	
 	public static void saveCurrentLocation(EntityPlayer player,String name) 
 	{ 
-		if (player.getHeldItem().stackTagCompound == null) {player.getHeldItem().stackTagCompound = new NBTTagCompound();}
+		if (player.getHeldItem().getTagCompound() == null) {player.getHeldItem().setTagCompound(new NBTTagCompound());}
 	
 		int id = getEmptySlotAndIncrement(player.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
     	
 		
 		BookLocation loc = new BookLocation(id,player  ,name);
     	  
-		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + id, loc.toCSV());		
+		player.getHeldItem().getTagCompound().setString(KEY_LOC + "_" + id, loc.toCSV());		
 	} 
 	
 	private static BookLocation getLocation(ItemStack stack, int slot)
 	{
-		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
+		String csv = stack.getTagCompound().getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
 		{
@@ -95,7 +95,7 @@ public class ItemEnderBook extends Item
 	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
 	{  
     	ItemStack stack = player.getHeldItem();
-		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
+		String csv = stack.getTagCompound().getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
 		{ 
@@ -120,7 +120,7 @@ public class ItemEnderBook extends Item
 		itemEnderBook = new ItemEnderBook();
 
 		String name = "book_ender";
-		itemEnderBook.setUnlocalizedName(name).setTextureName(ModEnderBook.TEXTURE_LOCATION + name);
+		itemEnderBook.setUnlocalizedName(name);//.setTextureName(ModEnderBook.TEXTURE_LOCATION + name);
 		GameRegistry.registerItem(itemEnderBook,name);
 		
 

@@ -40,6 +40,7 @@ public class BookLocation
 	
 	public String coordsDisplay()
 	{
+		//"["+id + "] "+
 		return Math.round(X)+", "+Math.round(Y)+", "+Math.round(Z);	// + showName	
 	} 
 }

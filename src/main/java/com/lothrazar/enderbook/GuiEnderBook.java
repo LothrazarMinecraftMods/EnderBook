@@ -1,17 +1,20 @@
 package com.lothrazar.enderbook;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;//http://www.minecraftforge.net/forum/index.php?topic=22378.0
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnderBook  extends GuiScreen
@@ -56,14 +59,14 @@ public class GuiEnderBook  extends GuiScreen
 		}
 
 		
-		txtNew = new GuiTextField(this.fontRendererObj,
+		txtNew = new GuiTextField(buttonID++,this.fontRendererObj,
 				buttonNew.xPosition + buttonNew.width + 8,
 				buttonNew.yPosition, 
 				w,h);
 		
 		txtNew.setMaxStringLength(maxNameLen);
 		//default to the current biome
-		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords((int)entityPlayer.posX, (int)entityPlayer.posY).biomeName);
+		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords(entityPlayer.getPosition()).biomeName);
 		txtNew.setFocused(true);
 		
 		GuiButtonBook btn;
@@ -120,7 +123,8 @@ public class GuiEnderBook  extends GuiScreen
 				if (buttonList.get(i) instanceof GuiButtonBook) 
 				{
 					GuiButtonBook btn = (GuiButtonBook) buttonList.get(i);
-					if (btn.func_146115_a() && btn.getTooltip() != null) 
+					//func_146115_a
+					if (btn.isMouseOver() && btn.getTooltip() != null) 
 					{
 						//it takes a list, one on each line. but we use single line tooltips
 						drawHoveringText(Arrays.asList(new String[]{ btn.getTooltip()}), x, y, fontRendererObj);
@@ -146,7 +150,7 @@ public class GuiEnderBook  extends GuiScreen
 			World world = this.entityPlayer.worldObj;
  
 			
-			world.spawnParticle("portal", entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
+			world.spawnParticle(EnumParticleTypes.PORTAL, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
 					, entityPlayer.posX + world.rand.nextDouble() * 0.6D 
 					, entityPlayer.posY + world.rand.nextDouble() * 0.6D 
 					, entityPlayer.posZ + world.rand.nextDouble() * 0.6D  );
@@ -171,13 +175,13 @@ public class GuiEnderBook  extends GuiScreen
         txtNew.updateCursorCounter();
     }
 	@Override
-	protected void keyTyped(char par1, int par2)
+	protected void keyTyped(char par1, int par2) throws IOException
     {
         super.keyTyped(par1, par2);
         txtNew.textboxKeyTyped(par1, par2);
     }
 	@Override
-	protected void mouseClicked(int x, int y, int btn) 
+	protected void mouseClicked(int x, int y, int btn) throws IOException 
 	{
         super.mouseClicked(x, y, btn);
         txtNew.mouseClicked(x, y, btn);
