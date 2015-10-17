@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -18,7 +19,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
  
-@Mod(modid = ModEnderBook.MODID,  useMetadata = true) 
+@Mod(modid = ModEnderBook.MODID,  useMetadata = true	
+,  guiFactory ="com.lothrazar."+ModEnderBook.MODID+".IngameConfigHandler")
 public class ModEnderBook
 {
 	@Instance(value = ModEnderBook.MODID)
@@ -39,7 +41,7 @@ public class ModEnderBook
 	{ 
 		//logger = event.getModLog();
 		
-		config = new ConfigSettings(new Configuration(event.getSuggestedConfigurationFile()));
+		ConfigSettings.load(new Configuration(event.getSuggestedConfigurationFile()));
  
 		MinecraftForge.EVENT_BUS.register(instance);
 		FMLCommonHandler.instance().bus().register(instance);
@@ -61,7 +63,13 @@ public class ModEnderBook
 		 network.registerMessage(PacketNewButton.class, PacketNewButton.class, packetID++, Side.SERVER);
 		 network.registerMessage(PacketDeleteButton.class, PacketDeleteButton.class, packetID++, Side.SERVER);
 	}
- 
+
+	@SubscribeEvent
+	public void onConfigChanged(OnConfigChangedEvent event) 
+	{
+		if (event.modID.equals(MODID)) ConfigSettings.syncConfig();
+	}
+	
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{

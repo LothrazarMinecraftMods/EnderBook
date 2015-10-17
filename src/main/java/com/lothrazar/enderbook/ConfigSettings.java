@@ -4,19 +4,25 @@ import net.minecraftforge.common.config.Configuration;
 
 public class ConfigSettings 
 {
-	boolean doesPauseGame;
-	boolean craftNetherStar;
-	boolean showCoordTooltips;
-	int maximumSaved;
-	int btnsPerColumn;
-	int expCostPerTeleport;
-	Configuration config;
-	public ConfigSettings(Configuration c)
+	public static boolean doesPauseGame;
+	public static boolean craftNetherStar;
+	public static boolean showCoordTooltips;
+	public static int maximumSaved;
+	public static int btnsPerColumn;
+	public static int expCostPerTeleport;
+	public static Configuration config;
+	public static String category_public;
+	public static void load(Configuration c)
 	{
 		config = c;
 		config.load();
-		String category = Configuration.CATEGORY_GENERAL;
 		
+		syncConfig();
+	}
+	public static void syncConfig()
+	{
+		String category = Configuration.CATEGORY_GENERAL;
+		category_public = category;//cat for ingame gui
 		doesPauseGame = config.getBoolean("pause_game_sp", category, false, "The Ender Book GUI will pause the game (single player)");
 		
 		craftNetherStar = config.getBoolean("needs_nether_star", category, true, "The Ender Book requires a nether star to craft.");

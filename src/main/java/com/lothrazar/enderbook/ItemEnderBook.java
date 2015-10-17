@@ -124,7 +124,7 @@ public class ItemEnderBook extends Item
 		GameRegistry.registerItem(itemEnderBook,name);
 		
 
-		if(ModEnderBook.config.craftNetherStar)
+		if(ConfigSettings.craftNetherStar)
 			GameRegistry.addRecipe(new ItemStack(itemEnderBook), 
 				"ene", 
 				"ebe",

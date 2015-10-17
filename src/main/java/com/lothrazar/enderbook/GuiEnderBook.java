@@ -53,7 +53,7 @@ public class GuiEnderBook  extends GuiScreen
 		buttonList.add(buttonNew);
  
 		if(entityPlayer.getHeldItem() != null && 
-				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ModEnderBook.config.maximumSaved)
+				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ConfigSettings.maximumSaved)
 		{
 			buttonNew.enabled = false;//also a tooltip?
 		}
@@ -82,7 +82,7 @@ public class GuiEnderBook  extends GuiScreen
 			loc = list.get(i);
 			buttonText = (loc.display == null) ? StatCollector.translateToLocal("gui.enderbook.go") : loc.display;
 			
-			if(i % ModEnderBook.config.btnsPerColumn == 0)  //do we start a new row?
+			if(i % ConfigSettings.btnsPerColumn == 0)  //do we start a new row?
 			{ 
 				x += w + delete_w + rowpad;
 				y = yStart;
@@ -116,7 +116,7 @@ public class GuiEnderBook  extends GuiScreen
 		
 		//http://www.minecraftforge.net/forum/index.php?topic=18043.0
 		
-		if(ModEnderBook.config.showCoordTooltips)
+		if(ConfigSettings.showCoordTooltips)
 			for (int i = 0; i < buttonList.size(); i++) 
 			{
 				if (buttonList.get(i) instanceof GuiButtonBook) 
@@ -161,7 +161,7 @@ public class GuiEnderBook  extends GuiScreen
 	@Override
 	public boolean doesGuiPauseGame()
 	{
-		return ModEnderBook.config.doesPauseGame;
+		return ConfigSettings.doesPauseGame;
 	}
 	
 	//http://www.minecraftforge.net/forum/index.php?topic=22378.0

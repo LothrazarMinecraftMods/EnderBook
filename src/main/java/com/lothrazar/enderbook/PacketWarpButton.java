@@ -35,7 +35,7 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
 		
 		
-		int cost = (int)ModEnderBook.config.expCostPerTeleport;
+		int cost = (int)ConfigSettings.expCostPerTeleport;
 		
 		
 		if(cost != 0 && UtilExperience.getExpTotal(player) < cost )
