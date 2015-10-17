@@ -33,14 +33,11 @@ public class ModEnderBook
 	public static String TEXTURE_LOCATION = MODID+":";
 	public static final SimpleNetworkWrapper network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 	 
-
 	public static int guiIndex = 52;
  
 	@EventHandler
 	public void onPreInit(FMLPreInitializationEvent event)
 	{ 
-		//logger = event.getModLog();
-		
 		ConfigSettings.load(new Configuration(event.getSuggestedConfigurationFile()));
  
 		MinecraftForge.EVENT_BUS.register(instance);
