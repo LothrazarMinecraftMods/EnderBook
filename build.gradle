@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 
-version = "1.8-1.0.0"
+version = "1.8-1.0.1"
 group= "com.lothrazar.enderbook"  
 archivesBaseName = "EnderBook"
 
