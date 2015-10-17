@@ -97,7 +97,6 @@ public class GuiEnderBook  extends GuiScreen
 			btn.enabled = (loc.dimension == this.entityPlayer.dimension); 
 			buttonList.add(btn);
 			
-			
 			del = new GuiButtonDelete(buttonID++, x - delete_w - 2,y,delete_w,h,"X",loc.id);
 			buttonList.add(del);
 		}
@@ -132,6 +131,7 @@ public class GuiEnderBook  extends GuiScreen
 				}
 			}
 	}
+	
 	@Override
 	protected void actionPerformed(GuiButton btn)
 	{
@@ -149,12 +149,10 @@ public class GuiEnderBook  extends GuiScreen
 			
 			World world = this.entityPlayer.worldObj;
  
-			
 			world.spawnParticle(EnumParticleTypes.PORTAL, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
 					, entityPlayer.posX + world.rand.nextDouble() * 0.6D 
 					, entityPlayer.posY + world.rand.nextDouble() * 0.6D 
 					, entityPlayer.posZ + world.rand.nextDouble() * 0.6D  );
-
 		}
 		
 		this.entityPlayer.closeScreen();
@@ -172,19 +170,19 @@ public class GuiEnderBook  extends GuiScreen
 	public void updateScreen()
     {
         super.updateScreen();
-        txtNew.updateCursorCounter();
+        if(txtNew != null)txtNew.updateCursorCounter();
     }
 	@Override
 	protected void keyTyped(char par1, int par2) throws IOException
     {
         super.keyTyped(par1, par2);
-        txtNew.textboxKeyTyped(par1, par2);
+        if(txtNew != null)txtNew.textboxKeyTyped(par1, par2);
     }
 	@Override
 	protected void mouseClicked(int x, int y, int btn) throws IOException 
 	{
         super.mouseClicked(x, y, btn);
-        txtNew.mouseClicked(x, y, btn);
+        if(txtNew != null)txtNew.mouseClicked(x, y, btn);
     }
 	//ok end of textbox fixing stuff
 }
