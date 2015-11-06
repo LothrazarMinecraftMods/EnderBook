@@ -15,6 +15,7 @@ import java.util.List;
 
 
 
+
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -33,6 +34,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.WorldServer;
 
 public class ItemEnderBook extends Item
 { 
@@ -132,9 +134,15 @@ public class ItemEnderBook extends Item
 		float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
 		//SHOULD be that length is only zero on save&quit. but just being safe
 		if(MinecraftServer.getServer().worldServers.length > 0)
-			MinecraftServer.getServer().worldServers[0].theChunkProviderServer.loadChunk(dest.getX(),dest.getZ());
+		{
+			WorldServer s = MinecraftServer.getServer().worldServers[0];
+			s.theChunkProviderServer.chunkLoadOverride = true;
+			s.theChunkProviderServer.unloadQueuedChunks();
+			s.theChunkProviderServer.loadChunk(dest.getX(),dest.getZ());
+		}
 		
-	    player.setPositionAndUpdate(loc.X-f,loc.Y+f,loc.Z-f); 
+		
+	    player.setPositionAndUpdate(loc.X-f,loc.Y + 0.9,loc.Z-f); 
 	    
 	    
 //GRAVEYARD BELOW!!!
