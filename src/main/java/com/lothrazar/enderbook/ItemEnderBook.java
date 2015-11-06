@@ -1,19 +1,38 @@
 package com.lothrazar.enderbook;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List; 
 
 //import com.google.common.collect.Sets;   
 
+
+
+
+
+
+
+
+
+
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.command.server.CommandTeleport;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.ChunkCoordIntPair;
 
 public class ItemEnderBook extends Item
 { 
@@ -67,16 +86,15 @@ public class ItemEnderBook extends Item
 		player.getHeldItem().getTagCompound().removeTag(KEY_LOC + "_" + slot);
 	}
 	
-	public static void saveCurrentLocation(EntityPlayer player,String name) 
+	public static void saveCurrentLocation(EntityPlayer player,ItemStack book, String name) 
 	{ 
-		if (player.getHeldItem().getTagCompound() == null) {player.getHeldItem().setTagCompound(new NBTTagCompound());}
+		if (book.getTagCompound() == null) {book.setTagCompound(new NBTTagCompound());}
 	
-		int id = getEmptySlotAndIncrement(player.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
+		int id = getEmptySlotAndIncrement(book);//int slot = entityPlayer.inventory.currentItem + 1;
     	
-		
 		BookLocation loc = new BookLocation(id,player  ,name);
     	  
-		player.getHeldItem().getTagCompound().setString(KEY_LOC + "_" + id, loc.toCSV());		
+		book.getTagCompound().setString(KEY_LOC + "_" + id, loc.toCSV());		
 	} 
 	
 	private static BookLocation getLocation(ItemStack stack, int slot)
@@ -107,12 +125,46 @@ public class ItemEnderBook extends Item
 		{ 
 			return;
 		}
-	 
-	    player.setPositionAndUpdate(loc.X,loc.Y,loc.Z); 
+		
+		
+		BlockPos dest = new BlockPos(loc.X,loc.Y,loc.Z);
+		
+		float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
+		//SHOULD be that length is only zero on save&quit. but just being safe
+		if(MinecraftServer.getServer().worldServers.length > 0)
+			MinecraftServer.getServer().worldServers[0].theChunkProviderServer.loadChunk(dest.getX(),dest.getZ());
+		
+	    player.setPositionAndUpdate(loc.X-f,loc.Y+f,loc.Z-f); 
+	    
+	    
+//GRAVEYARD BELOW!!!
+	  //LEAVING FAILED ATTEMPTS IN COMMENTS!!!
+		/*
+		Ticket ticket = ForgeChunkManager.requestTicket(ModEnderBook.instance, player.worldObj, ForgeChunkManager.Type.NORMAL);
+		//load the chunk - could be far away
+		if(ticket != null)
+		ForgeChunkManager.forceChunk(ticket,  
+				new ChunkCoordIntPair((int)loc.X,(int)loc.Z));
+CommandTeleport x;
+*/
+	   // player.setPositionAndRotation(loc.X-f,loc.Y+f,loc.Z-f, player.cameraYaw, player.cameraPitch);
+	    //yaw and pitch???
+	     
+
+		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
+		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-1,loc.Z)); 
+		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-2,loc.Z)); 
+		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-3,loc.Z)); 
+		
+     //   EnumSet enumset = EnumSet.noneOf(S08PacketPlayerPosLook.EnumFlags.class);
+	//	((EntityPlayerMP)player).playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y+f,loc.Z-f, player.cameraYaw, player.cameraPitch, enumset);
+		 
+		//player.worldObj.getChunkProvider().provideChunk(dest);
 
 	    
 	    //TODO: maybe 	a config entry so it takes durability?
 		//player.getCurrentEquippedItem().damageItem(1, player);
+	    
 	}
 	 
 	public static void initEnderbook()
