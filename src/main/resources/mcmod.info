@@ -3,7 +3,7 @@
   "modid": "enderbook",
   "name": "Ender Book",
   "description": "Adds a book that can be used to save your current location as a waypoint.  It stores multiple waypoints in any dimension, but teleporting can only be done within the same dimension.",
-  "version": "1.8-1.0.1",
+  "version": "1.8-1.0.2",
   "mcversion": "1.8",
   "url": "",
   "updateUrl": "",

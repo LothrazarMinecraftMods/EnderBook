@@ -137,14 +137,28 @@ public class ItemEnderBook extends Item
 		{
 			WorldServer s = MinecraftServer.getServer().worldServers[0];
 			s.theChunkProviderServer.chunkLoadOverride = true;
-			s.theChunkProviderServer.unloadQueuedChunks();
-			s.theChunkProviderServer.loadChunk(dest.getX(),dest.getZ());
+			//s.theChunkProviderServer.unloadQueuedChunks();
+			//s.theChunkProviderServer.unloadAllChunks();//!!NOTHING ELSE WORKED EITHERT!!
+			s.theChunkProviderServer.loadChunk(dest.getX(),dest.getZ()); 
 		}
+		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
+		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-1,loc.Z)); 
 		
+	    //player.setPositionAndUpdate(loc.X-f,loc.Y + 0.9,loc.Z-f); 
+	    
+	    //MAYBE:
+	    player.setPositionAndRotation(loc.X-f,loc.Y + 0.9,loc.Z-f,player.cameraYaw,player.cameraPitch); 
+
+	    //MADE NO DIFFERENCEEEEEEEEEEEEEEEEEE
+	   // String command = "/tp @p "+ dest.getX() +  " "+dest.getY()+" "+dest.getZ();
+	    //MinecraftServer.getServer().getCommandManager().executeCommand(player, command);
+
+
 		
-	    player.setPositionAndUpdate(loc.X-f,loc.Y + 0.9,loc.Z-f); 
-	    
-	    
+		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
+		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
+
+	    //just in case nothing else works
 //GRAVEYARD BELOW!!!
 	  //LEAVING FAILED ATTEMPTS IN COMMENTS!!!
 		/*
