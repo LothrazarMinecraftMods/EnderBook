@@ -102,6 +102,9 @@ public class ItemEnderBook extends Item
 			return;
 		}
 
+		//then drain
+		int cost = (int)ConfigSettings.expCostPerTeleport;
+		UtilExperience.drainExp(player, cost);
 		//play twice on purpose
 		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
 		if (player instanceof EntityPlayerMP )
@@ -113,6 +116,7 @@ public class ItemEnderBook extends Item
 
 		}
 		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
+		
 	}
 	 
 	public static void initEnderbook()

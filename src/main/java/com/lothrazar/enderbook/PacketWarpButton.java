@@ -45,9 +45,6 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		else
 		{
 			ItemEnderBook.teleport(player, message.slot);
-			
-			//then drain
-			UtilExperience.drainExp(player, cost);
 		}
 		
 		return null;
