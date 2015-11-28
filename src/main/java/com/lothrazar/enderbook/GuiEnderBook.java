@@ -19,16 +19,18 @@ public class GuiEnderBook  extends GuiScreen
 {
 	private final EntityPlayer entityPlayer;
 	//public final ResourceLocation texture = new ResourceLocation(ModSamsContent.MODID, "textures/enderbook/textures/gui/book_ender.png" );
-	final int maxNameLen = 10;
+	final int maxNameLen = 20;
 	public GuiEnderBook(EntityPlayer entityPlayer)
 	{
 		this.entityPlayer = entityPlayer;
 	}
-	int buttonCount = 10;
+	
 	public static int buttonIdNew;
 	GuiButton buttonNew;
 	GuiTextField txtNew;
 	final int DELETE_OFFSET = 1000;
+	
+	
 	@Override
 	public void initGui()
 	{
@@ -57,7 +59,7 @@ public class GuiEnderBook  extends GuiScreen
 
 		
 		txtNew = new GuiTextField(buttonID++,this.fontRendererObj,
-				buttonNew.xPosition + buttonNew.width + 8,
+				buttonNew.xPosition + buttonNew.width + 20,
 				buttonNew.yPosition, 
 				w,h);
 		
