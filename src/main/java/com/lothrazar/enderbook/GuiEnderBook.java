@@ -44,11 +44,10 @@ public class GuiEnderBook  extends GuiScreen
 		buttonID++;
 		ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
 		
-		buttonNew = new GuiButtonBook(buttonIdNew, 
+		buttonNew = new GuiButtonNew(buttonIdNew, 
 				this.width/2 - w,//x
 				20,//y
-				w,h,
-				StatCollector.translateToLocal("gui.enderbook.new"),buttonIdNew);
+				w,h,buttonIdNew);
 
 		buttonList.add(buttonNew);
  
@@ -69,7 +68,7 @@ public class GuiEnderBook  extends GuiScreen
 		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords(entityPlayer.getPosition()).biomeName);
 		txtNew.setFocused(true);
 		
-		GuiButtonBook btn;
+		GuiButtonTeleport btn;
 		GuiButton del;
 		BookLocation loc;
 		String buttonText;
@@ -92,7 +91,7 @@ public class GuiEnderBook  extends GuiScreen
 				y += h + ypad;
 			}
 			
-			btn = new GuiButtonBook(buttonID++, x,y,w,h,buttonText,loc.id);//+" "+loc.id
+			btn = new GuiButtonTeleport(buttonID++, x,y,w,h,buttonText,loc.id);//+" "+loc.id
 			btn.setTooltip(list.get(i).coordsDisplay()); 
 			btn.enabled = (loc.dimension == this.entityPlayer.dimension); 
 			buttonList.add(btn);
@@ -119,9 +118,9 @@ public class GuiEnderBook  extends GuiScreen
 		if(ConfigSettings.showCoordTooltips)
 			for (int i = 0; i < buttonList.size(); i++) 
 			{
-				if (buttonList.get(i) instanceof GuiButtonBook) 
+				if (buttonList.get(i) instanceof GuiButtonTeleport) 
 				{
-					GuiButtonBook btn = (GuiButtonBook) buttonList.get(i);
+					GuiButtonTeleport btn = (GuiButtonTeleport) buttonList.get(i);
 					//func_146115_a
 					if (btn.isMouseOver() && btn.getTooltip() != null) 
 					{
@@ -143,33 +142,14 @@ public class GuiEnderBook  extends GuiScreen
 		{
 			ModEnderBook.network.sendToServer(new PacketDeleteButton( ((GuiButtonDelete)btn).getSlot() ));
 		}
-		else if(btn instanceof GuiButtonBook)
+		else if(btn instanceof GuiButtonTeleport)
 		{
-			World world = this.entityPlayer.worldObj;
-			particleAtPlayer(world,entityPlayer);
-			ModEnderBook.network.sendToServer(new PacketWarpButton( ((GuiButtonBook)btn).getSlot() ));
-			
-			particleAtPlayer(world,entityPlayer);
+				//moved to btn class
 		}
 		
 		this.entityPlayer.closeScreen();
 	}
 	
-	private void particleAtPlayer(World world,EntityPlayer p)
-	{ 
-		spawnParticle(world,p.getPosition().getX(),p.getPosition().getY(),p.getPosition().getZ());
-		spawnParticle(world,p.getPosition().getX(),p.getPosition().getY()+1,p.getPosition().getZ());
-		spawnParticle(world,p.getPosition().getX(),p.getPosition().getY()+2,p.getPosition().getZ());
-	}
-	private void spawnParticle(World world,  double x, double y, double z)
-	{ 
-		//http://www.minecraftforge.net/forum/index.php?topic=9744.0
-		for(int countparticles = 0; countparticles <= 12; ++countparticles)
-		{
-			world.spawnParticle(EnumParticleTypes.PORTAL, x + (world.rand.nextDouble() - 0.5D) * (double)0.8, y + world.rand.nextDouble() * (double)1.5 - (double)0.1, z + (world.rand.nextDouble() - 0.5D) * (double)0.8
-					, 0.0D, 0.0D, 0.0D);
-		}
-	}
 	@Override
 	public boolean doesGuiPauseGame()
 	{
