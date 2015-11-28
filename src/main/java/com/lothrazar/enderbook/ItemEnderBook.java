@@ -1,39 +1,15 @@
 package com.lothrazar.enderbook;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List; 
-
-//import com.google.common.collect.Sets;   
-
-
-
-
-
-
-
-
-
-
-
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import java.util.ArrayList; 
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraft.command.server.CommandTeleport;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 
 public class ItemEnderBook extends Item

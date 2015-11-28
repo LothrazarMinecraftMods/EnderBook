@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent; 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -41,7 +41,6 @@ public class ModEnderBook
 		ConfigSettings.load(new Configuration(event.getSuggestedConfigurationFile()));
  
 		MinecraftForge.EVENT_BUS.register(instance);
-		FMLCommonHandler.instance().bus().register(instance);
 	}
 	
 	 
@@ -73,7 +72,7 @@ public class ModEnderBook
 		ItemStack itemStack = event.entityPlayer.getCurrentEquippedItem();
 		if (itemStack == null || itemStack.getItem() == null ) { return; }
 		
-		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && event.action.RIGHT_CLICK_AIR == event.action)
+		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && Action.RIGHT_CLICK_AIR == event.action)
 		{ 
 			EntityPlayer player = event.entityPlayer;
 
