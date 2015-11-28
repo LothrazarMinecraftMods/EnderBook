@@ -19,8 +19,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
  
-@Mod(modid = ModEnderBook.MODID,  useMetadata = true	
-,  guiFactory ="com.lothrazar."+ModEnderBook.MODID+".IngameConfigHandler")
+@Mod(modid = ModEnderBook.MODID,  useMetadata = true 	
+	,guiFactory ="com.lothrazar."+ModEnderBook.MODID+".IngameConfigHandler"
+	,updateJSON="https://github.com/LothrazarMinecraftMods/EnderBook/blob/master/update.json"
+)
 public class ModEnderBook
 {
 	@Instance(value = ModEnderBook.MODID)
