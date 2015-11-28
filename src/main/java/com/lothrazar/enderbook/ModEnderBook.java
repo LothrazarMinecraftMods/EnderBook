@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
  
 @Mod(modid = ModEnderBook.MODID,  useMetadata = true 	
 	,guiFactory ="com.lothrazar."+ModEnderBook.MODID+".IngameConfigHandler"
-	,updateJSON="https://github.com/LothrazarMinecraftMods/EnderBook/blob/master/update.json"
+	,updateJSON="https://raw.githubusercontent.com/LothrazarMinecraftMods/EnderBook/master/update.json"
 )
 public class ModEnderBook
 {

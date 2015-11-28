@@ -4,7 +4,7 @@
   "modid": "enderbook",
   "name": "Ender Book",
   "description": "Adds a book that can be used to save your current location as a waypoint.  It stores multiple waypoints in any dimension, but teleporting can only be done within the same dimension.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "mcversion": "1.8.8",
   "url": "http://www.curse.com/mc-mods/minecraft/236077-ender-book-use-xp-to-visit-your-waypoints", 
   "authorList": ["Lothrazar"],
