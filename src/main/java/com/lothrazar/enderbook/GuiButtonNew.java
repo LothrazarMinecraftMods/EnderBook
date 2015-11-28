@@ -1,17 +1,19 @@
 package com.lothrazar.enderbook;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.StatCollector;
 
-public class GuiButtonBook extends GuiButton
+public class GuiButtonNew extends GuiButton
 {
 	private int bookSlot;
 	public int getSlot()	
 	{
 		return bookSlot;
 	}
-	public GuiButtonBook(int id, int x, int y,	int w, int h, String txt, int slot) 
+	public GuiButtonNew(int id, int x, int y,	int w, int h,  int slot) 
 	{
-		super(id, x, y, w, h, txt);
+		super(id, x, y, w, h, 
+				StatCollector.translateToLocal("gui.enderbook.new"));
 		bookSlot = slot;
 	}
 	private String tooltip = null;
@@ -21,6 +23,6 @@ public class GuiButtonBook extends GuiButton
 	}
 	public String getTooltip()
 	{
-		return tooltip;
+		return tooltip; 
 	}
 }

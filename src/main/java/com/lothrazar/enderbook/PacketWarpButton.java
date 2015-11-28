@@ -4,9 +4,9 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpButton, IMessage>
 {
@@ -35,27 +35,17 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
 		
 		
-		int cost = (int)ModEnderBook.config.expCostPerTeleport;
+		int cost = (int)ConfigSettings.expCostPerTeleport;
 		
 		
 		if(cost != 0 && UtilExperience.getExpTotal(player) < cost )
 		{
-			//TODO: sound effect ???
-			//System.out.println("exp:" +UtilExperience.getExpTotal(player)+ " / "+cost);
-			
-			
 			player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("gui.chatexp")));
 		}
 		else
-		{
-			//TODO: sound effect ???
+		{ 
 			ItemEnderBook.teleport(player, message.slot);
-			
-			//then drain
-			UtilExperience.drainExp(player, cost);
 		}
-		//http://minecraft.gamepedia.com/Sounds.json
-		player.playSound("mob.endermen.portal", 1, 1);
 		
 		return null;
 	}

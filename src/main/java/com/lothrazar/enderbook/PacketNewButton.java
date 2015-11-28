@@ -2,10 +2,10 @@ package com.lothrazar.enderbook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
 import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketNewButton  implements IMessage, IMessageHandler<PacketNewButton, IMessage>
 {
@@ -34,7 +34,15 @@ public class PacketNewButton  implements IMessage, IMessageHandler<PacketNewButt
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
 		//otherwise, on the client we would use  Minecraft.getMinecraft().thePlayer;
 	
-		ItemEnderBook.saveCurrentLocation(player,message.name);
+		//this shouldnt happen anyway but just in case
+		if(player.getHeldItem() == null || 
+				!(player.getHeldItem().getItem() instanceof ItemEnderBook))
+		{
+			//then cancel
+			return null;
+		}
+		//it now passes the stack, in case the players hand becomes null/empty at some point during process
+		ItemEnderBook.saveCurrentLocation(player,player.getHeldItem(),message.name);
 		
 		
 		return null;

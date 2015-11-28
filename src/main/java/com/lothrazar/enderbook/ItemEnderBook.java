@@ -1,19 +1,18 @@
 package com.lothrazar.enderbook;
 
-import java.util.ArrayList;
-import java.util.List; 
+import java.util.ArrayList; 
 
-import com.google.common.collect.Sets;   
-
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.nbt.NBTTagCompound; 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.WorldServer;
 
 public class ItemEnderBook extends Item
 { 
@@ -38,7 +37,7 @@ public class ItemEnderBook extends Item
 		 {
 		 	 KEY = KEY_LOC + "_" + i;
 
-			 String csv = itemStack.stackTagCompound.getString(KEY);
+			 String csv = itemStack.getTagCompound().getString(KEY);
 	
 			 if(csv == null || csv.isEmpty()) {continue;} 
 		
@@ -50,52 +49,50 @@ public class ItemEnderBook extends Item
 
 	public static int getLargestSlot(ItemStack itemStack)
 	{
-		return itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+		return itemStack.getTagCompound().getInteger(KEY_LARGEST);
 	}
 	public static int getEmptySlotAndIncrement(ItemStack itemStack)
 	{
-		int empty = itemStack.stackTagCompound.getInteger(KEY_LARGEST);
+		int empty = itemStack.getTagCompound().getInteger(KEY_LARGEST);
 	
 		if(empty == 0) {empty = 1;}//first index is 1 not zero
 		
-		itemStack.stackTagCompound.setInteger(KEY_LARGEST,empty+1);//save the next empty one
+		itemStack.getTagCompound().setInteger(KEY_LARGEST,empty+1);//save the next empty one
 		return empty;
 	}
 
 	public static void deleteWaypoint(EntityPlayer player, int slot) 
 	{	
-		player.getHeldItem().stackTagCompound.removeTag(KEY_LOC + "_" + slot);
+		player.getHeldItem().getTagCompound().removeTag(KEY_LOC + "_" + slot);
 	}
 	
-	public static void saveCurrentLocation(EntityPlayer player,String name) 
+	public static void saveCurrentLocation(EntityPlayer player,ItemStack book, String name) 
 	{ 
-		if (player.getHeldItem().stackTagCompound == null) {player.getHeldItem().stackTagCompound = new NBTTagCompound();}
+		if (book.getTagCompound() == null) {book.setTagCompound(new NBTTagCompound());}
 	
-		int id = getEmptySlotAndIncrement(player.getHeldItem());//int slot = entityPlayer.inventory.currentItem + 1;
+		int id = getEmptySlotAndIncrement(book);//int slot = entityPlayer.inventory.currentItem + 1;
     	
-		
 		BookLocation loc = new BookLocation(id,player  ,name);
     	  
-		player.getHeldItem().stackTagCompound.setString(KEY_LOC + "_" + id, loc.toCSV());		
+		book.getTagCompound().setString(KEY_LOC + "_" + id, loc.toCSV());		
 	} 
 	
 	private static BookLocation getLocation(ItemStack stack, int slot)
 	{
-		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
+		String csv = stack.getTagCompound().getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
 		{
-			//Relay.addChatMessage(event.entityPlayer, "No location saved at "+KEY);
 			return null;
 		}
 		
 		return new BookLocation(csv);
 	}
-	
+	public static final String sound = "mob.endermen.portal";
 	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
 	{  
     	ItemStack stack = player.getHeldItem();
-		String csv = stack.stackTagCompound.getString(ItemEnderBook.KEY_LOC + "_" + slot);
+		String csv = stack.getTagCompound().getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
 		{ 
@@ -107,12 +104,33 @@ public class ItemEnderBook extends Item
 		{ 
 			return;
 		}
-	 
-	    player.setPositionAndUpdate(loc.X,loc.Y,loc.Z); 
 
-	    
-	    //TODO: maybe 	a config entry so it takes durability?
-		//player.getCurrentEquippedItem().damageItem(1, player);
+		//then drain
+		int cost = (int)ConfigSettings.expCostPerTeleport;
+		UtilExperience.drainExp(player, cost);
+		//play twice on purpose
+		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
+		if (player instanceof EntityPlayerMP )
+		{
+			//thanks so much to http://www.minecraftforge.net/forum/index.php?topic=18308.0
+			EntityPlayerMP p = ((EntityPlayerMP)player);
+			float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
+			p.playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y + 0.9,loc.Z-f, p.rotationYaw, p.rotationPitch);
+			BlockPos dest = new BlockPos(loc.X,loc.Y,loc.Z);
+			//try and force chunk loading
+			player.worldObj.markBlockForUpdate(dest); 
+			if(MinecraftServer.getServer().worldServers.length > 0)
+			{
+				WorldServer s = MinecraftServer.getServer().worldServers[0];
+				if(s != null)
+				{
+					s.theChunkProviderServer.chunkLoadOverride = true;
+					s.theChunkProviderServer.loadChunk(dest.getX(),dest.getZ()); 
+				}
+			}
+		}
+		
+		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
 	}
 	 
 	public static void initEnderbook()
@@ -120,11 +138,10 @@ public class ItemEnderBook extends Item
 		itemEnderBook = new ItemEnderBook();
 
 		String name = "book_ender";
-		itemEnderBook.setUnlocalizedName(name).setTextureName(ModEnderBook.TEXTURE_LOCATION + name);
+		itemEnderBook.setUnlocalizedName(name);//.setTextureName(ModEnderBook.TEXTURE_LOCATION + name);
 		GameRegistry.registerItem(itemEnderBook,name);
 		
-
-		if(ModEnderBook.config.craftNetherStar)
+		if(ConfigSettings.craftNetherStar)
 			GameRegistry.addRecipe(new ItemStack(itemEnderBook), 
 				"ene", 
 				"ebe",

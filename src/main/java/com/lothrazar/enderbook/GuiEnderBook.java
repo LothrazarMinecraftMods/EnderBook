@@ -1,7 +1,9 @@
 package com.lothrazar.enderbook;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;//http://www.minecraftforge.net/forum/index.php?topic=22378.0
 import net.minecraft.client.gui.GuiScreen;
@@ -9,9 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnderBook  extends GuiScreen
@@ -41,32 +42,31 @@ public class GuiEnderBook  extends GuiScreen
 		buttonID++;
 		ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
 		
-		buttonNew = new GuiButtonBook(buttonIdNew, 
+		buttonNew = new GuiButtonNew(buttonIdNew, 
 				this.width/2 - w,//x
 				20,//y
-				w,h,
-				StatCollector.translateToLocal("gui.enderbook.new"),buttonIdNew);
+				w,h,buttonIdNew);
 
 		buttonList.add(buttonNew);
  
 		if(entityPlayer.getHeldItem() != null && 
-				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ModEnderBook.config.maximumSaved)
+				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ConfigSettings.maximumSaved)
 		{
 			buttonNew.enabled = false;//also a tooltip?
 		}
 
 		
-		txtNew = new GuiTextField(this.fontRendererObj,
+		txtNew = new GuiTextField(buttonID++,this.fontRendererObj,
 				buttonNew.xPosition + buttonNew.width + 8,
 				buttonNew.yPosition, 
 				w,h);
 		
 		txtNew.setMaxStringLength(maxNameLen);
 		//default to the current biome
-		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords((int)entityPlayer.posX, (int)entityPlayer.posY).biomeName);
+		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords(entityPlayer.getPosition()).biomeName);
 		txtNew.setFocused(true);
 		
-		GuiButtonBook btn;
+		GuiButtonTeleport btn;
 		GuiButton del;
 		BookLocation loc;
 		String buttonText;
@@ -79,7 +79,7 @@ public class GuiEnderBook  extends GuiScreen
 			loc = list.get(i);
 			buttonText = (loc.display == null) ? StatCollector.translateToLocal("gui.enderbook.go") : loc.display;
 			
-			if(i % ModEnderBook.config.btnsPerColumn == 0)  //do we start a new row?
+			if(i % ConfigSettings.btnsPerColumn == 0)  //do we start a new row?
 			{ 
 				x += w + delete_w + rowpad;
 				y = yStart;
@@ -89,11 +89,10 @@ public class GuiEnderBook  extends GuiScreen
 				y += h + ypad;
 			}
 			
-			btn = new GuiButtonBook(buttonID++, x,y,w,h,buttonText,loc.id);//+" "+loc.id
+			btn = new GuiButtonTeleport(buttonID++, x,y,w,h,buttonText,loc.id);//+" "+loc.id
 			btn.setTooltip(list.get(i).coordsDisplay()); 
 			btn.enabled = (loc.dimension == this.entityPlayer.dimension); 
 			buttonList.add(btn);
-			
 			
 			del = new GuiButtonDelete(buttonID++, x - delete_w - 2,y,delete_w,h,"X",loc.id);
 			buttonList.add(del);
@@ -114,13 +113,14 @@ public class GuiEnderBook  extends GuiScreen
 		
 		//http://www.minecraftforge.net/forum/index.php?topic=18043.0
 		
-		if(ModEnderBook.config.showCoordTooltips)
+		if(ConfigSettings.showCoordTooltips)
 			for (int i = 0; i < buttonList.size(); i++) 
 			{
-				if (buttonList.get(i) instanceof GuiButtonBook) 
+				if (buttonList.get(i) instanceof GuiButtonTeleport) 
 				{
-					GuiButtonBook btn = (GuiButtonBook) buttonList.get(i);
-					if (btn.func_146115_a() && btn.getTooltip() != null) 
+					GuiButtonTeleport btn = (GuiButtonTeleport) buttonList.get(i);
+					//func_146115_a
+					if (btn.isMouseOver() && btn.getTooltip() != null) 
 					{
 						//it takes a list, one on each line. but we use single line tooltips
 						drawHoveringText(Arrays.asList(new String[]{ btn.getTooltip()}), x, y, fontRendererObj);
@@ -128,6 +128,7 @@ public class GuiEnderBook  extends GuiScreen
 				}
 			}
 	}
+	
 	@Override
 	protected void actionPerformed(GuiButton btn)
 	{
@@ -139,18 +140,9 @@ public class GuiEnderBook  extends GuiScreen
 		{
 			ModEnderBook.network.sendToServer(new PacketDeleteButton( ((GuiButtonDelete)btn).getSlot() ));
 		}
-		else if(btn instanceof GuiButtonBook)
+		else if(btn instanceof GuiButtonTeleport)
 		{
-			ModEnderBook.network.sendToServer(new PacketWarpButton( ((GuiButtonBook)btn).getSlot() ));
-			
-			World world = this.entityPlayer.worldObj;
- 
-			
-			world.spawnParticle("portal", entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
-					, entityPlayer.posX + world.rand.nextDouble() * 0.6D 
-					, entityPlayer.posY + world.rand.nextDouble() * 0.6D 
-					, entityPlayer.posZ + world.rand.nextDouble() * 0.6D  );
-
+				//moved to btn class
 		}
 		
 		this.entityPlayer.closeScreen();
@@ -159,7 +151,7 @@ public class GuiEnderBook  extends GuiScreen
 	@Override
 	public boolean doesGuiPauseGame()
 	{
-		return ModEnderBook.config.doesPauseGame;
+		return ConfigSettings.doesPauseGame;
 	}
 	
 	//http://www.minecraftforge.net/forum/index.php?topic=22378.0
@@ -168,19 +160,19 @@ public class GuiEnderBook  extends GuiScreen
 	public void updateScreen()
     {
         super.updateScreen();
-        txtNew.updateCursorCounter();
+        if(txtNew != null)txtNew.updateCursorCounter();
     }
 	@Override
-	protected void keyTyped(char par1, int par2)
+	protected void keyTyped(char par1, int par2) throws IOException
     {
         super.keyTyped(par1, par2);
-        txtNew.textboxKeyTyped(par1, par2);
+        if(txtNew != null)txtNew.textboxKeyTyped(par1, par2);
     }
 	@Override
-	protected void mouseClicked(int x, int y, int btn) 
+	protected void mouseClicked(int x, int y, int btn) throws IOException 
 	{
         super.mouseClicked(x, y, btn);
-        txtNew.mouseClicked(x, y, btn);
+        if(txtNew != null)txtNew.mouseClicked(x, y, btn);
     }
 	//ok end of textbox fixing stuff
 }
