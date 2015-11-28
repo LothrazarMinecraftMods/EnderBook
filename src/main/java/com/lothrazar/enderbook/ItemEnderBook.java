@@ -1,13 +1,16 @@
 package com.lothrazar.enderbook;
 
 import java.util.ArrayList; 
+
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.WorldServer;
@@ -103,66 +106,15 @@ public class ItemEnderBook extends Item
 		{ 
 			return;
 		}
-		
-		
-		BlockPos dest = new BlockPos(loc.X,loc.Y,loc.Z);
-		
-		float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
-		//SHOULD be that length is only zero on save&quit. but just being safe
-		if(MinecraftServer.getServer().worldServers.length > 0)
+	
+		if (player instanceof EntityPlayerMP )
 		{
-			WorldServer s = MinecraftServer.getServer().worldServers[0];
-			s.theChunkProviderServer.chunkLoadOverride = true;
-			//s.theChunkProviderServer.unloadQueuedChunks();
-			//s.theChunkProviderServer.unloadAllChunks();//!!NOTHING ELSE WORKED EITHERT!!
-			s.theChunkProviderServer.loadChunk(dest.getX(),dest.getZ()); 
+		  //thanks so much to http://www.minecraftforge.net/forum/index.php?topic=18308.0
+		  EntityPlayerMP p = ((EntityPlayerMP)player);
+		  float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
+		  p.playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y + 0.9,loc.Z-f, p.rotationYaw, p.rotationPitch);
+		
 		}
-		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
-		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-1,loc.Z)); 
-		
-	    //player.setPositionAndUpdate(loc.X-f,loc.Y + 0.9,loc.Z-f); 
-	    
-	    //MAYBE:
-	    player.setPositionAndRotation(loc.X-f,loc.Y + 0.9,loc.Z-f,player.cameraYaw,player.cameraPitch); 
-
-	    //MADE NO DIFFERENCEEEEEEEEEEEEEEEEEE
-	   // String command = "/tp @p "+ dest.getX() +  " "+dest.getY()+" "+dest.getZ();
-	    //MinecraftServer.getServer().getCommandManager().executeCommand(player, command);
-
-
-		
-		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
-		player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
-
-	    //just in case nothing else works
-//GRAVEYARD BELOW!!!
-	  //LEAVING FAILED ATTEMPTS IN COMMENTS!!!
-		/*
-		Ticket ticket = ForgeChunkManager.requestTicket(ModEnderBook.instance, player.worldObj, ForgeChunkManager.Type.NORMAL);
-		//load the chunk - could be far away
-		if(ticket != null)
-		ForgeChunkManager.forceChunk(ticket,  
-				new ChunkCoordIntPair((int)loc.X,(int)loc.Z));
-CommandTeleport x;
-*/
-	   // player.setPositionAndRotation(loc.X-f,loc.Y+f,loc.Z-f, player.cameraYaw, player.cameraPitch);
-	    //yaw and pitch???
-	     
-
-		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y,loc.Z)); 
-		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-1,loc.Z)); 
-		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-2,loc.Z)); 
-		//player.worldObj.markBlockForUpdate(new BlockPos(loc.X,loc.Y-3,loc.Z)); 
-		
-     //   EnumSet enumset = EnumSet.noneOf(S08PacketPlayerPosLook.EnumFlags.class);
-	//	((EntityPlayerMP)player).playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y+f,loc.Z-f, player.cameraYaw, player.cameraPitch, enumset);
-		 
-		//player.worldObj.getChunkProvider().provideChunk(dest);
-
-	    
-	    //TODO: maybe 	a config entry so it takes durability?
-		//player.getCurrentEquippedItem().damageItem(1, player);
-	    
 	}
 	 
 	public static void initEnderbook()
@@ -173,7 +125,6 @@ CommandTeleport x;
 		itemEnderBook.setUnlocalizedName(name);//.setTextureName(ModEnderBook.TEXTURE_LOCATION + name);
 		GameRegistry.registerItem(itemEnderBook,name);
 		
-
 		if(ConfigSettings.craftNetherStar)
 			GameRegistry.addRecipe(new ItemStack(itemEnderBook), 
 				"ene", 
