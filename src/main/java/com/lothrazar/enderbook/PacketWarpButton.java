@@ -40,22 +40,15 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		
 		if(cost != 0 && UtilExperience.getExpTotal(player) < cost )
 		{
-			//TODO: sound effect ???
-			//System.out.println("exp:" +UtilExperience.getExpTotal(player)+ " / "+cost);
-			
-			
 			player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("gui.chatexp")));
 		}
 		else
 		{
-			//TODO: sound effect ???
 			ItemEnderBook.teleport(player, message.slot);
 			
 			//then drain
 			UtilExperience.drainExp(player, cost);
 		}
-		//http://minecraft.gamepedia.com/Sounds.json
-		player.playSound("mob.endermen.portal", 1, 1);
 		
 		return null;
 	}

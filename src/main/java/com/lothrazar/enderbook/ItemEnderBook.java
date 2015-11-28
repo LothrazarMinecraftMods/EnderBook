@@ -9,11 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.WorldServer;
+import net.minecraft.nbt.NBTTagCompound; 
 
 public class ItemEnderBook extends Item
 { 
@@ -84,13 +80,12 @@ public class ItemEnderBook extends Item
 		
 		if(csv == null || csv.isEmpty()) 
 		{
-			//Relay.addChatMessage(event.entityPlayer, "No location saved at "+KEY);
 			return null;
 		}
 		
 		return new BookLocation(csv);
 	}
-	
+	public static final String sound = "mob.endermen.portal";
 	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
 	{  
     	ItemStack stack = player.getHeldItem();
@@ -106,15 +101,18 @@ public class ItemEnderBook extends Item
 		{ 
 			return;
 		}
-	
+
+		//play twice on purpose
+		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
 		if (player instanceof EntityPlayerMP )
 		{
-		  //thanks so much to http://www.minecraftforge.net/forum/index.php?topic=18308.0
-		  EntityPlayerMP p = ((EntityPlayerMP)player);
-		  float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
-		  p.playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y + 0.9,loc.Z-f, p.rotationYaw, p.rotationPitch);
-		
+			//thanks so much to http://www.minecraftforge.net/forum/index.php?topic=18308.0
+			EntityPlayerMP p = ((EntityPlayerMP)player);
+			float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
+			p.playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y + 0.9,loc.Z-f, p.rotationYaw, p.rotationPitch);
+
 		}
+		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
 	}
 	 
 	public static void initEnderbook()
