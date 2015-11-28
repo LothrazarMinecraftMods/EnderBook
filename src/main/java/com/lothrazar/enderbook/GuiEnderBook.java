@@ -111,10 +111,19 @@ public class GuiEnderBook  extends GuiScreen
 		//no idea why this is sometimes randomly null and only on world start if i open it too quick??
 		if(txtNew!=null)txtNew.drawTextBox();
 		
+		//super draws buttons and such
 		super.drawScreen(x, y, par3);
+		/*
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glScalef(1.0F, 1.0F, 1.0F);//so it does not change scale
+        this.mc.getTextureManager().bindTexture(new ResourceLocation(ModEnderBook.MODID, "textures/gui/book.png"));
+*/
+        //   drawTexturedQuadFit(this.guiLeft, this.guiTop,this.xSize,this.ySize,0);
+        //id fucking love to but 1.8.8 changed it all
+       // drawTexturedQuadFit(50, 20,this.width,this.height,0);
 		
 		//http://www.minecraftforge.net/forum/index.php?topic=18043.0
-		
+ 
 		if(ConfigSettings.showCoordTooltips)
 			for (int i = 0; i < buttonList.size(); i++) 
 			{
@@ -130,7 +139,7 @@ public class GuiEnderBook  extends GuiScreen
 				}
 			}
 	}
-	
+
 	@Override
 	protected void actionPerformed(GuiButton btn)
 	{
