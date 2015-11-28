@@ -43,7 +43,7 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 			player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("gui.chatexp")));
 		}
 		else
-		{
+		{ 
 			ItemEnderBook.teleport(player, message.slot);
 		}
 		

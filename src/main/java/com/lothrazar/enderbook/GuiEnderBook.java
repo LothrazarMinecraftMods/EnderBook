@@ -145,17 +145,22 @@ public class GuiEnderBook  extends GuiScreen
 		}
 		else if(btn instanceof GuiButtonBook)
 		{
+			World world = this.entityPlayer.worldObj;
+			particleAtPlayer(world,entityPlayer);
 			ModEnderBook.network.sendToServer(new PacketWarpButton( ((GuiButtonBook)btn).getSlot() ));
 			
-			World world = this.entityPlayer.worldObj;
- 
-			world.spawnParticle(EnumParticleTypes.PORTAL, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ 
-					, entityPlayer.posX + world.rand.nextDouble() * 0.6D 
-					, entityPlayer.posY + world.rand.nextDouble() * 0.6D 
-					, entityPlayer.posZ + world.rand.nextDouble() * 0.6D  );
+			particleAtPlayer(world,entityPlayer);
 		}
 		
 		this.entityPlayer.closeScreen();
+	}
+	
+	private void particleAtPlayer(World world,EntityPlayer p){
+
+		world.spawnParticle(EnumParticleTypes.PORTAL, p.posX, p.posY, p.posZ 
+				, p.posX + world.rand.nextDouble() * 0.6D 
+				, p.posY + world.rand.nextDouble() * 0.6D 
+				, p.posZ + world.rand.nextDouble() * 0.6D  );
 	}
 	
 	@Override
