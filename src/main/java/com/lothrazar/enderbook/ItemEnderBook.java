@@ -10,6 +10,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound; 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.WorldServer;
 
 public class ItemEnderBook extends Item
 { 
@@ -113,10 +116,21 @@ public class ItemEnderBook extends Item
 			EntityPlayerMP p = ((EntityPlayerMP)player);
 			float f = 0.5F;//center the player on the block. also moving up so not stuck in floor
 			p.playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y + 0.9,loc.Z-f, p.rotationYaw, p.rotationPitch);
-
+			BlockPos dest = new BlockPos(loc.X,loc.Y,loc.Z);
+			//try and force chunk loading
+			player.worldObj.markBlockForUpdate(dest); 
+			if(MinecraftServer.getServer().worldServers.length > 0)
+			{
+				WorldServer s = MinecraftServer.getServer().worldServers[0];
+				if(s != null)
+				{
+					s.theChunkProviderServer.chunkLoadOverride = true;
+					s.theChunkProviderServer.loadChunk(dest.getX(),dest.getZ()); 
+				}
+			}
 		}
-		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
 		
+		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
 	}
 	 
 	public static void initEnderbook()
