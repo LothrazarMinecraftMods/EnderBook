@@ -1,6 +1,8 @@
 package com.lothrazar.enderbook;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.SoundCategory;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -32,10 +34,11 @@ public class PacketDeleteButton  implements IMessage, IMessageHandler<PacketDele
 	{
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
 
-		ItemEnderBook.deleteWaypoint(player, message.slot);
+		ItemEnderBook.deleteWaypoint(player.getHeldItem(player.getActiveHand()), message.slot);
 
 		//http://minecraft.gamepedia.com/Sounds.json
-		player.playSound("mob.endermen.portal", 1, 1);
+		UtilSound.playSound(player.getEntityWorld(), player.getPosition(), SoundEvents.item_chorus_fruit_teleport, SoundCategory.PLAYERS);
+		//player.playSound("mob.endermen.portal", 1, 1);
 		
 		return null;
 	}

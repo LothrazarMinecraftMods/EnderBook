@@ -1,7 +1,7 @@
 package com.lothrazar.enderbook;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiButtonNew extends GuiButton
 {
@@ -13,7 +13,7 @@ public class GuiButtonNew extends GuiButton
 	public GuiButtonNew(int id, int x, int y,	int w, int h,  int slot) 
 	{
 		super(id, x, y, w, h, 
-				StatCollector.translateToLocal("gui.enderbook.new"));
+				I18n.translateToLocal("gui.enderbook.new"));
 		bookSlot = slot;
 	}
 	private String tooltip = null;

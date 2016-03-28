@@ -3,14 +3,13 @@ package com.lothrazar.enderbook;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;//http://www.minecraftforge.net/forum/index.php?topic=22378.0
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -36,7 +35,7 @@ public class GuiEnderBook  extends GuiScreen
 	{
 		//great tips here http://www.minecraftforge.net/forum/index.php?topic=29945.0
 
-		ItemStack book = entityPlayer.getHeldItem();
+		ItemStack book = entityPlayer.getHeldItem(entityPlayer.getActiveHand());
 		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
 
 		int buttonID = 0, w = 70,h = 20 , ypad = 1, delete_w = 20, rowpad = 8;
@@ -51,8 +50,8 @@ public class GuiEnderBook  extends GuiScreen
 
 		buttonList.add(buttonNew);
  
-		if(entityPlayer.getHeldItem() != null && 
-				ItemEnderBook.getLocations(entityPlayer.getHeldItem()).size() >= ConfigSettings.maximumSaved)
+		if(book != null && 
+				ItemEnderBook.getLocations(book).size() >= ConfigSettings.maximumSaved)
 		{
 			buttonNew.enabled = false;//also a tooltip?
 		}
@@ -65,7 +64,7 @@ public class GuiEnderBook  extends GuiScreen
 		
 		txtNew.setMaxStringLength(maxNameLen);
 		//default to the current biome
-		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords(entityPlayer.getPosition()).biomeName);
+		txtNew.setText(entityPlayer.worldObj.getBiomeGenForCoords(entityPlayer.getPosition()).getBiomeName());
 		txtNew.setFocused(true);
 		
 		GuiButtonTeleport btn;
@@ -79,7 +78,7 @@ public class GuiEnderBook  extends GuiScreen
 		for(int i = 0; i < list.size(); i++)
 		{
 			loc = list.get(i);
-			buttonText = (loc.display == null) ? StatCollector.translateToLocal("gui.enderbook.go") : loc.display;
+			buttonText = (loc.display == null) ? I18n.translateToLocal("gui.enderbook.go") : loc.display;
 			
 			if(i % ConfigSettings.btnsPerColumn == 0)  //do we start a new row?
 			{ 
@@ -105,7 +104,7 @@ public class GuiEnderBook  extends GuiScreen
 	public void drawScreen(int x, int y, float par3)
 	{
 		drawDefaultBackground();
-		drawCenteredString(fontRendererObj, StatCollector.translateToLocal("gui.enderbook.title"), width / 2, 6, 16777215);
+		drawCenteredString(fontRendererObj, I18n.translateToLocal("gui.enderbook.title"), width / 2, 6, 16777215);
 		
 		// http://www.minecraftforge.net/forum/index.php?topic=22378.0
 		//no idea why this is sometimes randomly null and only on world start if i open it too quick??

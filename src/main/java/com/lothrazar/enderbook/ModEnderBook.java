@@ -65,18 +65,21 @@ public class ModEnderBook
 	@SubscribeEvent
 	public void onConfigChanged(OnConfigChangedEvent event) 
 	{
-		if (event.modID.equals(MODID)) ConfigSettings.syncConfig();
+		if (event.getModID().equals(MODID)) ConfigSettings.syncConfig();
 	}
 	
 	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		ItemStack itemStack = event.entityPlayer.getCurrentEquippedItem();
+		EntityPlayer entityPlayer = event.getEntityPlayer();
+		
+		ItemStack itemStack = entityPlayer.getHeldItem(entityPlayer.getActiveHand());
+		
 		if (itemStack == null || itemStack.getItem() == null ) { return; }
 		
-		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && Action.RIGHT_CLICK_AIR == event.action)
+		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && Action.RIGHT_CLICK_AIR == event.getAction())
 		{ 
-			EntityPlayer player = event.entityPlayer;
+			EntityPlayer player = entityPlayer;
 
 			Minecraft.getMinecraft().displayGuiScreen(new GuiEnderBook(player));
 			

@@ -33,7 +33,7 @@ public class PacketNewButton  implements IMessage, IMessageHandler<PacketNewButt
 		//since we are on the server right now:
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
 		//otherwise, on the client we would use  Minecraft.getMinecraft().thePlayer;
-	
+	/*
 		//this shouldnt happen anyway but just in case
 		if(player.getHeldItem() == null || 
 				!(player.getHeldItem().getItem() instanceof ItemEnderBook))
@@ -41,8 +41,9 @@ public class PacketNewButton  implements IMessage, IMessageHandler<PacketNewButt
 			//then cancel
 			return null;
 		}
+		*/
 		//it now passes the stack, in case the players hand becomes null/empty at some point during process
-		ItemEnderBook.saveCurrentLocation(player,player.getHeldItem(),message.name);
+		ItemEnderBook.saveCurrentLocation(player,player.getHeldItem(player.getActiveHand()),message.name);
 		
 		
 		return null;

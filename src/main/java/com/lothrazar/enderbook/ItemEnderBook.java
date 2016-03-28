@@ -1,17 +1,18 @@
 package com.lothrazar.enderbook;
 
 import java.util.ArrayList; 
-
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound; 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 
 public class ItemEnderBook extends Item
@@ -61,9 +62,9 @@ public class ItemEnderBook extends Item
 		return empty;
 	}
 
-	public static void deleteWaypoint(EntityPlayer player, int slot) 
+	public static void deleteWaypoint(ItemStack book, int slot) 
 	{	
-		player.getHeldItem().getTagCompound().removeTag(KEY_LOC + "_" + slot);
+		book.getTagCompound().removeTag(KEY_LOC + "_" + slot);
 	}
 	
 	public static void saveCurrentLocation(EntityPlayer player,ItemStack book, String name) 
@@ -88,10 +89,10 @@ public class ItemEnderBook extends Item
 		
 		return new BookLocation(csv);
 	}
-	public static final String sound = "mob.endermen.portal";
+	
 	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
 	{  
-    	ItemStack stack = player.getHeldItem();
+    	ItemStack stack = player.getHeldItem(player.getActiveHand());
 		String csv = stack.getTagCompound().getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
@@ -99,7 +100,7 @@ public class ItemEnderBook extends Item
 			return;
 		}
 		
-		BookLocation loc = getLocation(player.getHeldItem(),slot);
+		BookLocation loc = getLocation(stack ,slot);
 		if(player.dimension != loc.dimension)
 		{ 
 			return;
@@ -108,8 +109,11 @@ public class ItemEnderBook extends Item
 		//then drain
 		int cost = (int)ConfigSettings.expCostPerTeleport;
 		UtilExperience.drainExp(player, cost);
-		//play twice on purpose
-		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
+		//play twice on purpose. at old and new locations
+		
+		UtilSound.playSound(player, SoundEvents.item_chorus_fruit_teleport, SoundCategory.PLAYERS);
+		
+
 		if (player instanceof EntityPlayerMP )
 		{
 			//thanks so much to http://www.minecraftforge.net/forum/index.php?topic=18308.0
@@ -118,7 +122,10 @@ public class ItemEnderBook extends Item
 			p.playerNetServerHandler.setPlayerLocation(loc.X-f,loc.Y + 0.9,loc.Z-f, p.rotationYaw, p.rotationPitch);
 			BlockPos dest = new BlockPos(loc.X,loc.Y,loc.Z);
 			//try and force chunk loading
-			player.worldObj.markBlockForUpdate(dest); 
+			
+			player.worldObj.getChunkFromBlockCoords(dest).setChunkModified();//.markChunkDirty(dest, null);
+			/*
+			//player.worldObj.markBlockForUpdate(dest); 
 			if(MinecraftServer.getServer().worldServers.length > 0)
 			{
 				WorldServer s = MinecraftServer.getServer().worldServers[0];
@@ -127,10 +134,10 @@ public class ItemEnderBook extends Item
 					s.theChunkProviderServer.chunkLoadOverride = true;
 					s.theChunkProviderServer.loadChunk(dest.getX(),dest.getZ()); 
 				}
-			}
+			}*/
 		}
-		
-		player.worldObj.playSoundAtEntity(player, sound, 1f, 1f);
+
+		UtilSound.playSound(player, SoundEvents.item_chorus_fruit_teleport, SoundCategory.PLAYERS);
 	}
 	 
 	public static void initEnderbook()

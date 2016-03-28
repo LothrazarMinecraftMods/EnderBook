@@ -1,8 +1,8 @@
 package com.lothrazar.enderbook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.translation.I18n;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -40,7 +40,7 @@ public class PacketWarpButton  implements IMessage, IMessageHandler<PacketWarpBu
 		
 		if(cost != 0 && UtilExperience.getExpTotal(player) < cost )
 		{
-			player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("gui.chatexp")));
+			player.addChatMessage(new TextComponentTranslation(I18n.translateToLocal("gui.chatexp")));
 		}
 		else
 		{ 
