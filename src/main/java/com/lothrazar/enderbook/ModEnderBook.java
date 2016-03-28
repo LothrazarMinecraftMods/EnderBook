@@ -67,24 +67,4 @@ public class ModEnderBook
 	{
 		if (event.getModID().equals(MODID)) ConfigSettings.syncConfig();
 	}
-	
-	@SubscribeEvent
-	public void onPlayerInteract(PlayerInteractEvent event)
-	{
-		EntityPlayer entityPlayer = event.getEntityPlayer();
-		
-		ItemStack itemStack = entityPlayer.getHeldItem(entityPlayer.getActiveHand());
-		
-		if (itemStack == null || itemStack.getItem() == null ) { return; }
-		
-		if (itemStack.getItem() == ItemEnderBook.itemEnderBook && Action.RIGHT_CLICK_AIR == event.getAction())
-		{ 
-			EntityPlayer player = entityPlayer;
-
-			Minecraft.getMinecraft().displayGuiScreen(new GuiEnderBook(player));
-			
-			//if it had a container, we would open it this way:
-			//player.openGui(instance, guiIndex, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-		}
-	}
 }

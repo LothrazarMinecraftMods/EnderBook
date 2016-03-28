@@ -2,6 +2,7 @@ package com.lothrazar.enderbook;
 
 import java.util.ArrayList; 
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,8 +12,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound; 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 public class ItemEnderBook extends Item
@@ -22,7 +28,7 @@ public class ItemEnderBook extends Item
 	public static ItemEnderBook itemEnderBook; 
 	
 	public ItemEnderBook( )
-	{  
+	{   
 		super(); 
 		this.setMaxStackSize(1);
     	setCreativeTab(CreativeTabs.tabTransport) ; 
@@ -169,6 +175,18 @@ public class ItemEnderBook extends Item
 		//if you want to clean out the book and start over
 		GameRegistry.addShapelessRecipe(new ItemStack(itemEnderBook), new ItemStack(itemEnderBook));
 	}
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer entityPlayer, EnumHand hand)
+    {
+		//ItemStack itemStack = entityPlayer.getHeldItem(entityPlayer.getActiveHand());
+		
+		if (stack == null || stack.getItem() == null ) { 
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack); 
+		}
+		
+		Minecraft.getMinecraft().displayGuiScreen(new GuiEnderBook(entityPlayer, stack));
 
+        return super.onItemRightClick(stack, world, entityPlayer, hand);
+    }
 }
  

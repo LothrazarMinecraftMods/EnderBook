@@ -17,11 +17,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiEnderBook  extends GuiScreen
 {
 	private final EntityPlayer entityPlayer;
+	private ItemStack bookStack;
 	//public final ResourceLocation texture = new ResourceLocation(ModSamsContent.MODID, "textures/enderbook/textures/gui/book_ender.png" );
 	final int maxNameLen = 20;
-	public GuiEnderBook(EntityPlayer entityPlayer)
+	public GuiEnderBook(EntityPlayer entityPlayer,ItemStack book)
 	{
 		this.entityPlayer = entityPlayer;
+		bookStack = book;
 	}
 	
 	public static int buttonIdNew;
@@ -35,13 +37,12 @@ public class GuiEnderBook  extends GuiScreen
 	{
 		//great tips here http://www.minecraftforge.net/forum/index.php?topic=29945.0
 
-		ItemStack book = entityPlayer.getHeldItem(entityPlayer.getActiveHand());
-		if(book.hasTagCompound() == false){book.setTagCompound(new NBTTagCompound());}
+		if(bookStack.hasTagCompound() == false){bookStack.setTagCompound(new NBTTagCompound());}
 
 		int buttonID = 0, w = 70,h = 20 , ypad = 1, delete_w = 20, rowpad = 8;
 		buttonIdNew = buttonID;
 		buttonID++;
-		ArrayList<BookLocation> list = ItemEnderBook.getLocations(book);
+		ArrayList<BookLocation> list = ItemEnderBook.getLocations(bookStack);
 		
 		buttonNew = new GuiButtonNew(buttonIdNew, 
 				this.width/2 - w,//x
@@ -50,8 +51,8 @@ public class GuiEnderBook  extends GuiScreen
 
 		buttonList.add(buttonNew);
  
-		if(book != null && 
-				ItemEnderBook.getLocations(book).size() >= ConfigSettings.maximumSaved)
+		if(bookStack != null && 
+				ItemEnderBook.getLocations(bookStack).size() >= ConfigSettings.maximumSaved)
 		{
 			buttonNew.enabled = false;//also a tooltip?
 		}
@@ -182,7 +183,7 @@ public class GuiEnderBook  extends GuiScreen
 	protected void mouseClicked(int x, int y, int btn) throws IOException 
 	{
         super.mouseClicked(x, y, btn);
-        if(txtNew != null)txtNew.mouseClicked(x, y, btn);
+        if(txtNew != null){txtNew.mouseClicked(x, y, btn);}
     }
 	//ok end of textbox fixing stuff
 }
