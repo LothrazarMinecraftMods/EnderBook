@@ -34,7 +34,7 @@ public class PacketDeleteButton  implements IMessage, IMessageHandler<PacketDele
 	{
 		EntityPlayer player = ((NetHandlerPlayServer)ctx.netHandler).playerEntity;
 
-		ItemEnderBook.deleteWaypoint(player.getHeldItem(player.getActiveHand()), message.slot);
+		ItemEnderBook.deleteWaypoint(player, message.slot);
 
 		//http://minecraft.gamepedia.com/Sounds.json
 		UtilSound.playSound(player.getEntityWorld(), player.getPosition(), SoundEvents.item_chorus_fruit_teleport, SoundCategory.PLAYERS);

@@ -43,7 +43,9 @@ public class PacketNewButton  implements IMessage, IMessageHandler<PacketNewButt
 		}
 		*/
 		//it now passes the stack, in case the players hand becomes null/empty at some point during process
-		ItemEnderBook.saveCurrentLocation(player,player.getHeldItem(player.getActiveHand()),message.name);
+		
+		
+		ItemEnderBook.saveCurrentLocation(player,message.name);
 		
 		
 		return null;

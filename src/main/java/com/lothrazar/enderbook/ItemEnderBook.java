@@ -11,15 +11,12 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound; 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class ItemEnderBook extends Item
 { 
@@ -68,14 +65,28 @@ public class ItemEnderBook extends Item
 		return empty;
 	}
 
-	public static void deleteWaypoint(ItemStack book, int slot) 
+	private static ItemStack getPlayersBook(EntityPlayer player){
+
+		ItemStack book = player.getHeldItem(EnumHand.MAIN_HAND);
+		if(book == null || book.getItem() != ItemEnderBook.itemEnderBook){
+			book = player.getHeldItem(EnumHand.OFF_HAND);
+		}
+		
+		if (book.getTagCompound() == null) {book.setTagCompound(new NBTTagCompound());}
+		return book;
+	}
+	public static void deleteWaypoint(EntityPlayer player, int slot) 
 	{	
+
+		ItemStack book = getPlayersBook(player);
 		book.getTagCompound().removeTag(KEY_LOC + "_" + slot);
 	}
 	
-	public static void saveCurrentLocation(EntityPlayer player,ItemStack book, String name) 
+	public static void saveCurrentLocation(EntityPlayer player, String name) 
 	{ 
-		if (book.getTagCompound() == null) {book.setTagCompound(new NBTTagCompound());}
+
+		ItemStack book = getPlayersBook(player);
+		
 	
 		int id = getEmptySlotAndIncrement(book);//int slot = entityPlayer.inventory.currentItem + 1;
     	
@@ -98,15 +109,16 @@ public class ItemEnderBook extends Item
 	
 	public static void teleport(EntityPlayer player,int slot)// ItemStack enderBookInstance 
 	{  
-    	ItemStack stack = player.getHeldItem(player.getActiveHand());
-		String csv = stack.getTagCompound().getString(ItemEnderBook.KEY_LOC + "_" + slot);
+		ItemStack book = getPlayersBook(player);
+		
+		String csv = book.getTagCompound().getString(ItemEnderBook.KEY_LOC + "_" + slot);
 		
 		if(csv == null || csv.isEmpty()) 
 		{ 
 			return;
 		}
 		
-		BookLocation loc = getLocation(stack ,slot);
+		BookLocation loc = getLocation(book ,slot);
 		if(player.dimension != loc.dimension)
 		{ 
 			return;
@@ -178,8 +190,6 @@ public class ItemEnderBook extends Item
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer entityPlayer, EnumHand hand)
     {
-		//ItemStack itemStack = entityPlayer.getHeldItem(entityPlayer.getActiveHand());
-		
 		if (stack == null || stack.getItem() == null ) { 
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack); 
 		}
